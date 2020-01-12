@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+Upload Data
+{% endblock %}
+
+{% block header %}
+Upload Data
+{% endblock %}
+
+{% block content %}
+{% import "bootstrap/wtf.html" as wtf %}
+<div class="row">
+  <div class="col">
+    <form action={{ url_for('main.data') }} method="post" class="form" enctype="multipart/form-data" role="form">
+      <div class="col form-wrapper">
+            {{ dataform.csrf_token }}
+        <div class="input-group mb-3">
+            {{ dataform.name(placeholder="Name",class_='form-control') }}
+        </div>
+        <div class="custom-file mb-3">
+            {{ dataform.mat(class_='custom-file-input') }}
+          <label class="custom-file-label" for="customFile">Select .mat File</label>
+        </div>
+        <div class="input-group mb-3">
+            {{ dataform.curvature(placeholder="Curvature",class_='form-control') }}
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">Array</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            {{ dataform.mass(placeholder="Mass",class_='form-control') }}
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">kg</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            {{ dataform.power(placeholder="Power",class_='form-control') }}
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">W</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            {{ dataform.air_density(placeholder="Air Density",class_='form-control') }}
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">kg/m<sup>3</sup></span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            {{ dataform.reference_area(placeholder="Reference area",class_='form-control') }}
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">m<sup>2</sup></span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            {{ dataform.coefficient_of_drag(placeholder="Coefficient of Drag",class_='form-control') }}
+        </div>
+        <div class="input-group mb-3">
+            {{ dataform.coefficient_of_friction(placeholder="Coefficient of Friction",class_='form-control') }}
+        </div>
+        <div class="input-group mb-3">
+            {{ dataform.coefficient_of_lift(placeholder="Coefficient of Lift",class_='form-control') }}
+        </div>
+        <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit</button>
+      </div>
+    </form>
+  </div>
+  
+  <div class="col-md-4 rear-car">
+    <img src="{{ url_for('static',filename='img/rear_car.jpg') }}" alt="">
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script type="application/javascript">
+  $('input[type="file"]').change(function(e){
+      var fileName = e.target.files[0].name;
+      $('.custom-file-label').html(fileName);
+  });
+</script>
+{% endblock %}

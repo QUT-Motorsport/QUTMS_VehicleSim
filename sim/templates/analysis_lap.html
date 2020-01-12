@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+Analysis
+{% endblock %}
+
+{% block header %}
+Analysis
+{% endblock %}
+
+{% block content %}
+<!-- DataTables Example -->
+
+<div class="card mb-3">
+    <div class="card-header">
+      <i class="fas fa-table"></i>
+      QUTMS Vehicle Dynamics</div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Mass (kg)</th>
+              <th>Power (W)</th>
+              <th>Air Density (kg/m<sup>3</sup>)</th>
+              <th>Reference Area (m<sup>2</sup>)</th>
+              <th>Coefficient of Drag</th>
+              <th>Coefficient of Friction</th>
+              <th>Coefficient of Lift</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Mass</th>
+                <th>Power</th>
+                <th>Air Density</th>
+                <th>Reference Area</th>
+                <th>Coefficient of Drag</th>
+                <th>Coefficient of Friction</th>
+                <th>Coefficient of Lift</th>
+                <th></th>
+            </tr>
+          </tfoot>
+          <tbody>
+          {% if data is defined %}
+            {% for item in data %}
+            <tr>
+              <td>{{item.name}}</td>
+              <td>{{item.mass}}</td>
+              <td>{{item.power}}</td>
+              <td>{{item.air_density}}</td>
+              <td>{{item.reference_area}}</td>
+              <td>{{item.coefficient_of_drag}}</td>
+              <td>{{item.coefficient_of_friction}}</td>
+              <td>{{item.coefficient_of_lift}}</td>
+              <td class="btn-view">
+                <a href = '/graph/{{item.id}}'class="btn btn-secondary btn-lg btn-block btn-square h-100">View</button>
+              </td>
+              
+            </tr>
+            {% endfor %}
+            {% else %}
+            <td>   variable is not defined   </td>
+            {% endif %}
+                       
+          </tbody>
+        </table>
+      </div>
+    </div>
+{% if data[0] is defined %}
+    {% set date = data[0].id .split(' ') %}
+    {% set time = date[1].split('.') %}
+    <div class="card-footer small text-muted">Updated at {{ date[0] }} at {{time[0]}}</div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<!-- Page level plugin JavaScript-->
+<script src="{{ url_for('static', filename='vendor/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+
+<!-- Demo scripts for this page-->
+<script src="{{ url_for('static', filename='js/demo/datatables-demo.js') }}"></script>
+{% endblock %}

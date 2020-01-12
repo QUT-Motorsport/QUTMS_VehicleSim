@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+Graph
+{% endblock %}
+
+{% block header %}
+{{name}} - {{fastest_lap}}
+<div class="btn-group d-flex mt-2" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary" onclick="window.location.href = '/graph/{{id.id}}';">View All</button>
+    <button type="button" class="btn btn-secondary" onclick="window.location.href = '/gg/{{id.id}}';">GG Diagram</button>
+    <button type="button" class="btn btn-secondary">Speed v Curvature</button>
+    <button type="button" class="btn btn-secondary">Accumulator</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="mb-5">
+{{graph_html|safe}}
+</div>
+{% endblock %}

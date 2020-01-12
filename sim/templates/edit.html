@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+Edit
+{% endblock %}
+
+{% block header %}
+Edit
+{% endblock %}
+
+{% block content %}
+
+<!-- DataTables Example -->
+<div class="card mb-3">
+    <div class="card-header">
+      <i class="fas fa-table"></i>
+      QUTMS Vehicle Dynamics</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Date Uploaded</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Date Uploaded</th>
+                <th></th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% if data is defined %}
+            {% for item in data %}
+            <tr>
+              <td>{{item.name}}</td>
+              <td>Point Mass Lap</td>
+              <td>{{item.id}}</td>
+              <td class="btn-view">
+              <button type="button" class="btn btn-danger btn-lg btn-block btn-square" data-toggle="modal" data-target="#EditModal_{{ item.id | replace(' ','')| replace('-','')| replace(':','')| replace('.','')}}">Delete</button>
+              
+                <!-- Modal -->
+                <div class="modal fade" id="EditModal_{{ item.id | replace(' ','')| replace('-','')| replace(':','')| replace('.','')}}" role="dialog">
+                  <div class="modal-dialog">
+      
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Remove item</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+            
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure you wish to remove {{item.name}}?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <a href={{ "/lrm/" ~ item.id | replace(" ","%20") }} class="btn btn-danger"> Delete {{item.name}}</a>
+                        <button type="button"  class="btn btn-secondary"  data-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+  
+  </td></tr>
+            {% endfor %}
+            {% else %}
+            <td>   variable is not defined   </td>
+            {% endif %}
+            {% if qcar is defined %}
+            {% for item in qcar %}
+            <tr>
+              <td>{{item.name}}</td>
+              <td>QCar</td>
+              <td>{{item.id}}</td>
+              <td class="btn-view">
+              <button type="button" class="btn btn-danger btn-lg btn-block btn-square" data-toggle="modal" data-target="#EditModal_{{ item.id | replace(' ','')| replace('-','')| replace(':','')| replace('.','')}}">Delete</button>
+              
+                <!-- Modal -->
+                <div class="modal fade" id="EditModal_{{ item.id | replace(' ','')| replace('-','')| replace(':','')| replace('.','')}}" role="dialog">
+                  <div class="modal-dialog">
+      
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Remove item</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+            
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure you wish to remove {{item.name}}?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <a href={{ "/qrm/" ~ item.id | replace(" ","%20") }} class="btn btn-danger"> Delete {{item.name}}</a>
+                        <button type="button"  class="btn btn-secondary"  data-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+  
+  </td></tr>
+            {% endfor %}
+            {% else %}
+            {% endif %}
+                       
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- Page level plugin JavaScript-->
+<script src="{{ url_for('static', filename='vendor/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+
+<!-- Demo scripts for this page-->
+<script src="{{ url_for('static', filename='js/demo/datatables-demo.js') }}"></script>
+{% endblock %}

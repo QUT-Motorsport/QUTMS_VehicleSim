@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+Help
+{% endblock %}
+
+{% block header %}
+Key Terms & Symbols
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h5>Fundamentals</h5>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Name</th>
+                <th scope="col">Base Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <th scope="row">F<sub>y</sub></th>
+                <td>Lateral Force</td>
+                <td><i>N</i></td>
+                </tr>
+                <tr>
+                <th scope="row"><i>M</i></th>
+                <td>Force Moment</td>
+                <td><i>N</i>m</td>
+                </tr>
+                <tr>
+                <th scope="row"><i>a</i></th>
+                <td>Distance from CG to Front Track</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row"><i>b</i></th>
+                <td>Distance from CG to Rear Track</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row">T<sub>F</sub></th>
+                <td>Front Track Width</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row">T<sub>R</sub></th>
+                <td>Rear Track Width</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row">A<sub>F</sub></th>
+                <td>Front Lat. Acceleration</td>
+                <td><i>m/s</i><sup>2</sup></td>
+                </tr>
+                <tr>
+                <th scope="row">A<sub>R</sub></th>
+                <td>Rear Lat. Acceleration</td>
+                <td><i>m/s</i><sup>2</sup></td>
+                </tr>
+                <tr>
+                <th scope="row">Fx</th>
+                <td>Longitudinal Force</td>
+                <td><i>N</i></td>
+                </tr>
+                <tr>
+                <th scope="row">Mz</th>
+                <td>Tire Aligning Moment</td>
+                <td><i>N</i>m</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col">
+        <h5>Fundamentals</h5>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Name</th>
+                <th scope="col">Base Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <th scope="row">I<sub>zz</sub></th>
+                <td>Yaw Inertia</td>
+                <td>kgm<sup>2</sup></td>
+                </tr>
+                <tr>
+                <th scope="row"><i>θ</i></th>
+                <td>Yaw Angle</td>
+                <td>rad</td>
+                </tr>
+                <tr>
+                <th scope="row">θ̇, r (Theta with Dot)</th>
+                <td>Yaw Velocity</td>
+                <td>rad/s</td>
+                </tr>
+                <tr>
+                <th scope="row">θ̈, ṙ (Theta with 2 Dots)</th>
+                <td>Yaw Acceleration</td>
+                <td>rad/s<sup>2</sup></td>
+                </tr>
+                <tr>
+                <th scope="row">V<sub>x</sub></th>
+                <td>Longitudinal Velocity</td>
+                <td><i>m/s</i></td>
+                </tr>
+                <tr>
+                <th scope="row">My</th>
+                <td>Tire Rolling Moment</td>
+                <td><i>N</i>m</td>
+                </tr>
+                <tr>
+                <th scope="row">Mx</th>
+                <td>Tire Overturning Moment</td>
+                <td><i>N</i>m</td>
+                </tr>
+                <tr>
+                <th scope="row">F<sub>z</sub></th>
+                <td>Vertical Force</td>
+                <td><i>N</i></td>
+                </tr>
+                <tr>
+                <th scope="row">R</th>
+                <td>Corner Radius</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row">A<sub>x</sub></th>
+                <td>Longitudinal Acceleration</td>
+                <td><i>m/s</i><sup>2</sup></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <h5>Tires</h5>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Name</th>
+                <th scope="col">Base Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <th scope="row">μ<sub>x</sub></th>
+                <td>Longitudinal Coefficient of Friction</td>
+                <td></td>
+                </tr>
+                <tr>
+                <th scope="row">μ<sub>y</sub></th>
+                <td>Lateral Coefficient of Friction</td>
+                <td></td>
+                </tr>
+                <tr>
+                <th scope="row"><i>a</i></th>
+                <td>Distance from CG to Front Track</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row"><i>b</i></th>
+                <td>Distance from CG to Rear Track</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row">T<sub>F</sub></th>
+                <td>Front Track Width</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row">T<sub>R</sub></th>
+                <td>Rear Track Width</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row">A<sub>F</sub></th>
+                <td>Front Lat. Acceleration</td>
+                <td><i>m/s</i><sup>2</sup></td>
+                </tr>
+                <tr>
+                <th scope="row">A<sub>R</sub></th>
+                <td>Rear Lat. Acceleration</td>
+                <td><i>m/s</i><sup>2</sup></td>
+                </tr>
+                <tr>
+                <th scope="row">Fx</th>
+                <td>Longitudinal Force</td>
+                <td><i>N</i></td>
+                </tr>
+                <tr>
+                <th scope="row">Mz</th>
+                <td>Tire Aligning Moment</td>
+                <td><i>N</i>m</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col">
+        <h5>Tires</h5>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Name</th>
+                <th scope="col">Base Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <th scope="row">I<sub>zz</sub></th>
+                <td>Yaw Inertia</td>
+                <td>kgm<sup>2</sup></td>
+                </tr>
+                <tr>
+                <th scope="row"><i>θ</i></th>
+                <td>Yaw Angle</td>
+                <td>rad</td>
+                </tr>
+                <tr>
+                <th scope="row">θ̇, r (Theta with Dot)</th>
+                <td>Yaw Velocity</td>
+                <td>rad/s</td>
+                </tr>
+                <tr>
+                <th scope="row">θ̈, ṙ (Theta with 2 Dots)</th>
+                <td>Yaw Acceleration</td>
+                <td>rad/s<sup>2</sup></td>
+                </tr>
+                <tr>
+                <th scope="row">V<sub>x</sub></th>
+                <td>Longitudinal Velocity</td>
+                <td><i>m/s</i></td>
+                </tr>
+                <tr>
+                <th scope="row">My</th>
+                <td>Tire Rolling Moment</td>
+                <td><i>N</i>m</td>
+                </tr>
+                <tr>
+                <th scope="row">Mx</th>
+                <td>Tire Overturning Moment</td>
+                <td><i>N</i>m</td>
+                </tr>
+                <tr>
+                <th scope="row">F<sub>z</sub></th>
+                <td>Vertical Force</td>
+                <td><i>N</i></td>
+                </tr>
+                <tr>
+                <th scope="row">R</th>
+                <td>Corner Radius</td>
+                <td><i>m</i></td>
+                </tr>
+                <tr>
+                <th scope="row">A<sub>x</sub></th>
+                <td>Longitudinal Acceleration</td>
+                <td><i>m/s</i><sup>2</sup></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/help.js') }}"></script>
+{% endblock %}
