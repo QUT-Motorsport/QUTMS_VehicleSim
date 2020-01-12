@@ -10,6 +10,7 @@ import os
 import sys
 from vehiclesim import *
 window_w = window_h = 0
+
 def check_upload_file(form):
     # get file data from form
     fp = form.mat.data
@@ -27,24 +28,28 @@ def check_upload_file(form):
 
 bp = Blueprint('main', __name__)
 
+# Home Page
 @bp.route('/')
 def upload():
     dataform = dataForm()
     title = 'QUTMS | Upload - Lap'
     return render_template('upload.html', title=title, dataform = dataform)
 
+# Analyse table for Plot Mass
 @bp.route('/analysis/lap')
 def analysis_lap():
     data = Lap.query.order_by(Lap.id.desc()).all()
     title = 'QUTMS | Analysis'
     return render_template('analysis_lap.html', title=title, data=data)
 
+# Analyse table for Quarter Car
 @bp.route('/analysis/qcar')
 def analysis_qcar():
     data = QCAR.query.order_by(QCAR.id.desc()).all()
     title = 'QUTMS | Analysis'
     return render_template('analysis_qcar.html', title=title, data=data)
 
+# Analyse table for Editing entries in DB
 @bp.route('/edit')
 def edit():
     data = Lap.query.order_by(Lap.id.desc()).all()
@@ -52,17 +57,20 @@ def edit():
     title = 'QUTMS | Edit'
     return render_template('edit.html', title=title, data=data,qcar=qcar)
 
+# View Help for VD Symbols
 @bp.route('/help')
 def help():
     title = 'QUTMS | Help'
     return render_template('help.html', title=title)
 
+# Upload parameters for Quarter Car
 @bp.route('/qcar-upload')
 def qcar_upload():
     dataform = quarterCarForm()
     title = 'QUTMS | QCar'
     return render_template('qcar_upload.html', title=title, dataform=dataform)
 
+# Standard Graph for Plot Mass
 @bp.route('/graph/<id>', defaults={'width': None, 'height': None})
 @bp.route('/graph/<id>/<width>/<height>')
 def graph(id, width=None, height=None):
@@ -84,6 +92,7 @@ def graph(id, width=None, height=None):
     title = 'QUTMS | Graph'
     return render_template('graph.html',min_speed=min_speed,max_speed=max_speed, graph_html=graph_html,title=title, name=id.name, fastest_lap=fastest_lap[2:], id=id)
 
+# GG Only Diagram for Plot Mass
 @bp.route('/gg/<id>', defaults={'width': None, 'height': None})
 @bp.route('/gg/<id>/<width>/<height>')
 def gg_diagram(id, width=None, height=None):
@@ -105,6 +114,7 @@ def gg_diagram(id, width=None, height=None):
     title = 'QUTMS | GG Diagram'
     return render_template('gg_diagram.html',id=id,min_speed=min_speed,max_speed=max_speed, graph_html=graph_html,title=title, name=id.name, fastest_lap=fastest_lap[2:])
 
+# Delete Lap Entry
 @bp.route('/lrm/<id>')
 def lrm(id):
     info = Lap.query.filter_by(id=id).first()
@@ -117,6 +127,7 @@ def lrm(id):
     flash("File removed" )
     return redirect('/edit')
 
+# Delete Quarter Car entry
 @bp.route('/qrm/<id>')
 def qrm(id):
     info = QCAR.query.filter_by(id=id).first()
@@ -125,6 +136,7 @@ def qrm(id):
     flash("File removed" )
     return redirect('/edit')
 
+# Uploads data object for Plot Mass
 @bp.route('/data', methods=['GET','POST'])
 def data():
     dataform = dataForm()
@@ -152,6 +164,8 @@ def data():
         flash('The file was successfully uploaded to the database', 'success')
         print('Added', 'success')
     return redirect(url_for('main.upload'))
+
+# Upload data for Quarter Car
 @bp.route('/qcardata', methods=['GET','POST'])
 def qcar_data():
     dataform = quarterCarForm()

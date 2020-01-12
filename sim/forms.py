@@ -3,24 +3,6 @@ from wtforms import StringField, SubmitField,DateField,FloatField, PasswordField
 from wtforms.validators import InputRequired
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
-#creates the login information
-# class LoginForm(FlaskForm):
-#     user_name=StringField("User Name", validators=[InputRequired('Enter user name')])
-#     password=PasswordField("Password", validators=[InputRequired('Enter user password')])
-#     submit = SubmitField("Login")
-
-#  # this is the registration form
-# class RegisterForm(FlaskForm):
-#     user_name=StringField("User Name", validators=[InputRequired()])
-#     email_id = StringField("Email Address", validators=[Email("Please enter a valid email")])
-    
-#     #linking two fields - password should be equal to data entered in confirm
-#     password=PasswordField("Password", validators=[InputRequired(),
-#                   EqualTo('confirm', message="Passwords should match")])
-#     confirm = PasswordField("Confirm Password")
-#     #submit button
-#     submit = SubmitField("Register")
-
 class dataForm(FlaskForm):
     
     name = StringField("Name", validators=[InputRequired()])
