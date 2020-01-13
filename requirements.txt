@@ -1,0 +1,12 @@
+flask
+flask_bootstrap
+flask_sqlalchemy
+flask_login
+werkzeug
+wtforms
+flask_wtf
+scipy
+pandas
+matplotlib
+numpy
+mpld3
