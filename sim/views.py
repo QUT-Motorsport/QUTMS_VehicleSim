@@ -123,7 +123,7 @@ def lrm(id):
     matfile = os.path.join(BASE_PATH, 'static/mat', info.mat)
     Lap.query.filter_by(id=id).delete()
     db.session.commit()
-    os.remove(matfile) 
+    os.remove(matfile)
     flash("File removed" )
     return redirect('/edit')
 
@@ -192,3 +192,11 @@ def qcar_data():
         flash('The file was successfully uploaded to the database', 'success')
         print('Added', 'success')
     return redirect(url_for('main.qcar_upload'))
+
+# Export Button (not hooked up yet - needs button + functions)
+@bproute(/export, methods=['GET', "POST"])
+def pull_pickles():
+    #pickle.load( open( "save.p", "rb" ) )
+    return redirect('/export')
+    
+    
