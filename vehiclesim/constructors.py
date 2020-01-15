@@ -1,6 +1,7 @@
 from vehiclesim import *
 import pickle
 
+
 def plotMassLapSim(mat_file, crv_name, window_w, window_h, g, m, P, p, A, Cd, mu, Cl):
     offset, crv_array, array_length, x_array, start_position, end_position, offset, crv = fetch_data(mat_file, crv_name)
     lat_velocity, peak_loc = lateral_velocity(g, m, P, p, A, Cd, mu, Cl, array_length, crv_array)
