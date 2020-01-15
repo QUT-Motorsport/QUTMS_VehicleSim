@@ -30,6 +30,13 @@ bp = Blueprint('main', __name__)
 
 # Home Page
 @bp.route('/')
+def live_telemetry():
+    dataform = dataForm()
+    title = 'QUTMS | Live Telemetry'
+    return render_template('live_telemetry.html', title=title, dataform = dataform)
+
+# Upload Lap Page
+@bp.route('/upload/lap')
 def upload():
     dataform = dataForm()
     title = 'QUTMS | Upload - Lap'
@@ -64,7 +71,7 @@ def help():
     return render_template('help.html', title=title)
 
 # Upload parameters for Quarter Car
-@bp.route('/qcar-upload')
+@bp.route('/upload/qcar-upload')
 def qcar_upload():
     dataform = quarterCarForm()
     title = 'QUTMS | QCar'
@@ -166,7 +173,7 @@ def data():
     return redirect(url_for('main.upload'))
 
 # Upload data for Quarter Car
-@bp.route('/qcardata', methods=['GET','POST'])
+@bp.route('/upload/qcardata', methods=['GET','POST'])
 def qcar_data():
     dataform = quarterCarForm()
     if dataform.validate_on_submit():
