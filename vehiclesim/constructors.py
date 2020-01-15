@@ -14,10 +14,10 @@ def plotMassLapSim(mat_file, crv_name, window_w, window_h, g, m, P, p, A, Cd, mu
 
     a_lat, a_long = lat_long(accel_a_lat, accel_a_long, brake_a_lat, brake_a_long, accel_velocity, velocity, crv)
 
-    graph_html, fig = plot_MassLap_all_html(window_w, window_h, x_array, crv, velocity, a_lat, a_long)
+    graph_html, fig_all = plot_MassLap_all_html(window_w, window_h, x_array, crv, velocity, a_lat, a_long)
 
     #pickle the 'image' to be called later to download
-    pickle.dump(fig, open("save.p", "wb"))
+    pickle.dump(fig_all, open("graph_all.p", "wb"))
 
     return graph_html, fastest_lap, min_speed, max_speed
 
@@ -34,9 +34,9 @@ def plotMassGG(mat_file, crv_name, window_w, window_h, g, m, P, p, A, Cd, mu, Cl
 
     a_lat, a_long = lat_long(accel_a_lat, accel_a_long, brake_a_lat, brake_a_long, accel_velocity, velocity, crv)
 
-    graph_html = plot_MassLap_gg_html(window_w, window_h, x_array, crv, velocity, a_lat, a_long)
+    graph_html, fig_gg = plot_MassLap_gg_html(window_w, window_h, x_array, crv, velocity, a_lat, a_long)
 
     #pickle the 'image' to be called later to download
-    pickle.dump( graph_html, open( "save.p", "wb" ) )
+    pickle.dump(fig_gg, open("graph_gg.p", "wb"))
 
     return graph_html, fastest_lap, min_speed, max_speed

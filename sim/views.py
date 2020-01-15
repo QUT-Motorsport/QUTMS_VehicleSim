@@ -1,6 +1,6 @@
 from .models import Lap, QCAR
 from .forms import dataForm, quarterCarForm
-from flask import Blueprint,render_template, redirect, url_for, request, flash
+from flask import Blueprint,render_template, redirect, url_for, request, flash, send_file
 from flask_login import LoginManager,login_user,current_user,logout_user, login_required
 import datetime
 from . import db
@@ -194,25 +194,18 @@ def qcar_data():
         print('Added', 'success')
     return redirect(url_for('main.qcar_upload'))
 
-
+#download all graphs
 @bp.route('/export_button', methods=['GET', "POST"])
-def export_generate():
-    fig = pickle.load(open('save.p','rb'))
-    fig.savefig('sim/static/graph.svg')
+def export_generate_all():
+    fig = pickle.load(open('graph_all.p','rb'))
+    fig.savefig('sim/static/svg/graph_all.svg')
+    return send_file('static/svg/graph_all.svg', as_attachment=True, attachment_filename='graph_output_all.svg')    
 
-    #return render_template('export.html')
+#download gg graph
+@bp.route('/export_button_gg')
+def export_generate_gg():
+    fig_gg = pickle.load(open('graph_gg.p','rb'))
+    fig_gg.savefig('sim/static/svg/graph_gg.svg')
+    return send_file('static/svg/graph_gg.svg', as_attachment=True, attachment_filename='graph_output_gg.svg')
 
-    
-    
-#@bp.route('/export', methods=['GET', "POST"])
-#def export():
-    #graph = pickle.load(open("save.p", "rb"))
-    #return render_pdf('export.html', download_filename='test_1.pdf')
-
-# Export Button (not hooked up yet - needs button + functions)
-#@bproute(/export, methods=['GET', "POST"])
-#def pull_pickles():
-    #pickle.load( open( "save.p", "rb" ) )
-#    return redirect('/export')
-    
     

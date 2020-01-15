@@ -55,7 +55,7 @@ def plot_MassLap_gg_html(window_w, window_h, x, crv, velocity, a_lat, a_long):
     ax.margins(x=0.01, y=0.01)
 
     html_text = mpld3.fig_to_html(fig)
-    return html_text
+    return html_text, fig
 
 def plot_MassLap_SpeedCurvature_html():
     pass
