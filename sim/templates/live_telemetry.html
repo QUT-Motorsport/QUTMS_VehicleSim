@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+Live Telemetry
+{% endblock %}
+
+{% block header %}
+Live Telemetry
+{% endblock %}
+
+{% block content %}
+{% import "bootstrap/wtf.html" as wtf %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/speedometer.css') }}">
+<style type="text/css">
+    .proa{
+    position: relative;
+    margin: 4px;
+    float:left;
+    text-align: center;
+    margin-bottom: 25px;
+    }
+    .vertical {
+        display: inline-block;
+        width: 20%;
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        margin-top: 60px;
+    }
+    .barOverflow{ /* Wraps the rotating .bar */
+    position: relative;
+    overflow: hidden; /* Comment this line to understand the trick */
+    width: 250px; height: 125px; /* Half circle (overflow) */
+    }
+    .bar{
+    position: absolute;
+    top: 0; left: 0;
+    width: 250px; height: 250px; /* full circle! */
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 25px solid #eee;     /* half gray, */
+    border-bottom-color: #0bf;  /* half azure */
+    border-left-color: #0bf;
+    }
+</style>
+
+<div class="row">
+  <div class="col">
+    <form action={{ url_for('main.qcar_data') }} method="post" class="form" role="form">
+
+        <!-- First Row -->
+        <div class="row">
+            <div class="col">
+                <h5>Ground Speed</h5>
+                <hr>
+                <div class="proa">
+                    <div class="barOverflow">
+                      <div class="bar"></div>
+                      <div><p style="font-size: 40px; margin-top: 70px;">40<span style="font-size: 25px;">km/h</span></p></div>
+                    </div>
+                    
+                  </div>
+                
+                <!-- END -->
+            </div>
+            <div class="col">
+                <h5>CG Acceleration</h5>
+                <hr>
+                <div style="text-align: center;">
+                    <div style="width: 300px;">
+                        <svg height="210" width="500" position="relative" style="
+                        position: absolute;
+                        left: 50%;
+                        top: 200px;
+                        z-index: 1;"
+                    >
+                        <line x1="0" y1="0" x2="0" y2="200" style="stroke:#0bf; stroke-width: 10" />
+                    </svg>
+
+                        <svg height="210" width="500" position="relative" style="
+                        position: absolute;
+                        left: 50%;
+                        top: 200px;
+                        z-index: 1;"
+                    >
+                        <line x1="0" y1="0" x2="200" y2="0" style="stroke:#0bf; stroke-width: 10" />
+                    </svg>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUvGb066DdQgDNPGfx3xnKx7ofNn-ZiZeMFELignKjJCnmFKlQnA&s" class="img-fluid" alt="Responsive image" style="position: absolute; width: 100%;
+                        left: 0px;
+                        top: 0px;
+                        z-index: -1; ">
+                    </div>   
+                </div>
+                <p><strong>CG Lat:</strong> 5</p>
+                <p><strong>CG Long:</strong> 5</p>
+            </div>
+            <div class="col">
+                <h5>Energy</h5>
+                <hr>
+                <div class="progress" style="height: 50px">
+                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 40%; height: 50px" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="h2 font-weight-bold" style="line-height:50px">80%</div>
+                </div>
+                <p>600/2000</p>
+            </div>
+        </div>
+
+        <!-- Second Row -->
+        <div class="row">
+            <div class="col">
+                <h5>Pedal Positions</h5>
+                <hr>
+                <div>
+                    <div style="text-align: center; float: left; margin-top: 0px; padding: 0px;">
+                        <div class="vertical" style="width: 150px;">
+                            <div class="progress" style="height: 50px">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 65px;">Acceleration</p>
+                    </div>
+                    <div style="text-align: center; float: left; margin-top: 0px; padding: 0px;">
+                        <div class="vertical" style="width: 150px;">
+                            <div class="progress" style="height: 50px">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 65px;">Brake</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h5>Steering Angle</h5>
+                <hr>
+                <div>
+                    <img src="https://motorsport.tech/wp-content/uploads/2019/05/SWheel_shell.jpg" class="img-fluid" alt="Responsive image" style="width: 200px; transform: rotate(5deg);">
+                    <div><p style="font-size: 40px; margin-left: 80px;">5&#176;</p></div>
+                </div>
+            </div>
+            
+        </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
