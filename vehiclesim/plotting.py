@@ -42,12 +42,7 @@ def plot_MassLap_all_html(window_w, window_h, x, crv, velocity, a_lat, a_long):
     fig.subplots_adjust(top = 0.97, bottom = 0.05, right = 1, left = 0.05, hspace = 0.2, wspace = 0.2)
 
     html_text = mpld3.fig_to_html(fig)
-    return html_text
-
-# def gg_colour(x_lst, y_lst):
-#     colours = []
-#     for x in x_lst:
-#         for y in y_lst:
+    return html_text, fig
 
 def ggboxes(a_lat, a_long, ax):
     xmax = max(a_lat)
