@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import sys
 from vehiclesim import *
+import matplotlib.pyplot as plt
 window_w = window_h = 0
 
 def check_upload_file(form):
@@ -192,3 +193,17 @@ def qcar_data():
         flash('The file was successfully uploaded to the database', 'success')
         print('Added', 'success')
     return redirect(url_for('main.qcar_upload'))
+
+
+@bp.route('/export_button', methods=['GET', "POST"])
+def export_generate():
+    fig = pickle.load(open('save.p','rb'))
+    fig.savefig('sim/static/graph.svg')
+    # return render_template('export.html')
+
+    
+    
+#@bp.route('/export', methods=['GET', "POST"])
+#def export():
+    #graph = pickle.load(open("save.p", "rb"))
+    #return render_pdf('export.html', download_filename='test_1.pdf')
