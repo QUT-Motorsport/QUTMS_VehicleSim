@@ -197,15 +197,21 @@ def qcar_data():
 #download all graphs
 @bp.route('/export_button', methods=['GET', "POST"])
 def export_generate_all():
+    #load pickled graphs
     fig = pickle.load(open('graph_all.p','rb'))
+    #save as svg internally
     fig.savefig('sim/static/svg/graph_all.svg')
+    #return svg to client
     return send_file('static/svg/graph_all.svg', as_attachment=True, attachment_filename='graph_output_all.svg')    
 
 #download gg graph
 @bp.route('/export_button_gg')
 def export_generate_gg():
+    #load pickled gg graph
     fig_gg = pickle.load(open('graph_gg.p','rb'))
+    #save as svg internally
     fig_gg.savefig('sim/static/svg/graph_gg.svg')
+    #return svg to client
     return send_file('static/svg/graph_gg.svg', as_attachment=True, attachment_filename='graph_output_gg.svg')
 
     
