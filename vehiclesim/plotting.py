@@ -45,10 +45,12 @@ def plot_MassLap_all_html(window_w, window_h, x, crv, velocity, a_lat, a_long):
     return html_text, fig
 
 def ggboxes(a_lat, a_long, ax):
+    # Find where the boundaries of the points in the graph lie
     xmax = max(a_lat)
     ymax = max(a_long)
     xmin = min(a_lat)
     ymin = min(a_long)
+    # Draw boxes around each section, the barriers for each section is defined here: (page 1) https://optimumg.com/wp-content/uploads/2019/09/RCE-Assymetrical-Setup-Part1.pdf
     rect1 = patches.Rectangle((xmin, 0.25 * 9.81), (-0.25 * 9.81 - xmin), (ymax - 0.25 * 9.81), linewidth=3, edgecolor='c', facecolor='none')
     rect2 = patches.Rectangle((-0.25 * 9.81, 0.25 * 9.81), (0.5 * 9.81), (ymax - 0.25 * 9.81), linewidth=3, edgecolor='r', facecolor='none')
     rect3 = patches.Rectangle((0.25 * 9.81, 0.25 * 9.81), (xmax - 0.25 * 9.81), (ymax - 0.25 * 9.81), linewidth=3, edgecolor='c', facecolor='none')
@@ -69,6 +71,7 @@ def ggboxes(a_lat, a_long, ax):
     ax.add_patch(rect9)
 
 def gg_legend(a_lat, a_long):
+    # Initialise lists and counter values for each GG diagram section
     colour = []
     red = 0 
     purple = 0
@@ -79,39 +82,51 @@ def gg_legend(a_lat, a_long):
     blue = 0 
     brown = 0
     yellow = 0
-
+    # For each point in the graph define where it lies
+    # If a point is in a given section a number is appended into a list which is later used to colour the diagram according to the GG diagram sections
+    # The counters are increased to determine what % of the time the car is in a certain section  
     for i in range(len(a_lat)): 
         if a_lat[i] > 0.25 * 9.8:
+             # Trail braking into left corner
             if a_long[i] < -0.25 * 9.8: 
-                yellow += 1 # Trail braking into left corner 
+                yellow += 1 
                 colour.append(8)
+            # Pure left cornering 
             elif -0.25 * 9.8 <= a_long[i] <= 0.25 * 9.8: 
-                cyan += 1 # Pure left cornering 
+                cyan += 1 
                 colour.append(5)
+            # Combined acceleration out of a left turn
             elif a_long[i] > 0.25 * 9.8: 
-                green += 1 # Combined acceleration out of a left turn
+                green += 1 
                 colour.append(2)
         elif -0.25 * 9.8 <= a_lat[i] <= 0.25 * 9.8:
+            # Pure braking
             if a_long[i] < -0.25 * 9.8: 
-                brown += 1 # Pure braking 
+                brown += 1  
                 colour.append(7)
+            # Center
             elif -0.25 * 9.8 <= a_long[i] <= 0.25 * 9.8: 
-                black += 1 # Center
+                black += 1 
                 colour.append(4)
+            # Pure acceleration
             elif a_long[i] > 0.25 * 9.8: 
-                purple += 1 # Pure acceleration 
+                purple += 1  
                 colour.append(1)
         elif a_lat[i] < -0.25 * 9.8: 
+            # Trail braking going into right corner
             if a_long[i] < -0.25 * 9.8: 
-                blue += 1 # Trail braking going into right corner
+                blue += 1 
                 colour.append(6)
+            # Pure right cornering
             elif -0.25 * 9.8 <= a_long[i] <= 0.25 * 9.8: 
-                orange += 1 # Pure right cornering
+                orange += 1 
                 colour.append(3)
+            # Combined acceleration out of a right turn
             elif a_long[i] > 0.25 * 9.8: 
-                red += 1 # Combined acceleration out of a right turn
+                red += 1 
                 colour.append(0)
 
+    # Find percentage of time car spends in each section
     red = round(((red / len(a_lat))*100), 2)
     purple = round(((purple / len(a_lat))*100), 2)
     green = round(((green / len(a_lat))*100), 2)
@@ -122,6 +137,7 @@ def gg_legend(a_lat, a_long):
     brown = round(((brown / len(a_lat))*100), 2)
     yellow = round(((yellow / len(a_lat))*100), 2)
 
+    # Create a legend with percentage of time car spends in each section
     red_label = 'Accel right {}%'.format(red)
     purple_label = 'Pure accel {}%'.format(purple)
     green_label = 'Accel left {}%'.format(green)
@@ -141,12 +157,14 @@ def gg_legend(a_lat, a_long):
     blue_patch = mpatches.Patch(color='y', label=blue_label)
     brown_patch = mpatches.Patch(color='b', label=brown_label)
     yellow_patch = mpatches.Patch(color='y', label=yellow_label)
+    # Position the labels 
     plt.legend(handles=[red_patch, purple_patch, green_patch, orange_patch, black_patch, cyan_patch, blue_patch, brown_patch, yellow_patch], loc = 'lower left')
     
     return colour
 
 def gg_colour_sorting(a_lat, a_long, colour):
-
+    # Create lists for each of the individual section
+    # Each section has two lists - one for each of the lateral and longitudinal positions of the car when it is in a given GG diagram section
     accel_right_lat = []
     accel_right_long = []
     pure_accel_lat = [] 
@@ -166,6 +184,7 @@ def gg_colour_sorting(a_lat, a_long, colour):
     brake_left_lat = [] 
     brake_left_long = []
 
+    # For all the coordinates found if the car is in a given section append the coordinates to the appropriate list
     for i in range(len(colour)):
         if colour[i] == 0:
             accel_right_lat.append(a_lat[i])
@@ -199,17 +218,21 @@ def gg_colour_sorting(a_lat, a_long, colour):
 
 
 def plot_MassLap_gg_html(window_w, window_h, x, crv, velocity, a_lat, a_long):
+
+    # Plot figure and determine size
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     graph_size = (((window_h - 500) * (12 - 7)) / (1080 - 500)) + 7
     fig.set_size_inches(graph_size, graph_size - 1)
 
+    # Title diagram and create legend
     ax.set_title('G-G Diagram')
-    #ggboxes(a_lat, a_long, ax)
     colour = gg_legend(a_lat, a_long)
+
+    #ggboxes(a_lat, a_long, ax) # Create boxes around sections
     
+    # Colour the plots based on the position of the plots
     bx, by, cx, cy, dx, dy, ex, ey, fx, fy, gx, gy, hx, hy, ix, iy, jx, jy = gg_colour_sorting(a_lat, a_long, colour)
-    #ax.plot(a_lat, a_long, 'b.')
     ax.plot(bx, by, 'c.', markersize = 4)
     ax.plot(cx, cy, 'r.', markersize = 4)
     ax.plot(dx, dy, 'c.', markersize = 4)
