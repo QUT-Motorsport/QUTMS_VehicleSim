@@ -19,21 +19,6 @@ Live Telemetry
         transform: rotate(-90deg);
         margin-top: 60px;
     }
-    .barOverflow{ /* Wraps the rotating .bar */
-        position: relative;
-        overflow: hidden; /* Comment this line to understand the trick */
-        width: 250px; height: 125px; /* Half circle (overflow) */
-    }
-    .bar{
-        position: absolute;
-        top: 0; left: 0;
-        width: 250px; height: 250px; /* full circle! */
-        border-radius: 50%;
-        box-sizing: border-box;
-        border: 25px solid #eee;     /* half gray, */
-        border-bottom-color: #0bf;  /* half azure */
-        border-left-color: #0bf;
-    }
 </style>
 
 <script type="text/javascript" src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
@@ -54,7 +39,7 @@ Live Telemetry
 
                                 var bar = new ProgressBar.SemiCircle(semicircle, {
                                     strokeWidth: 6,
-                                    color: '#0bf',
+                                    color: '#0F406A',
                                     trailColor: '#eee',
                                     trailWidth: 1,
                                     easing: 'easeInOut',
@@ -64,8 +49,8 @@ Live Telemetry
                                         value: '',
                                         alignToBottom: false
                                     },
-                                    from: {color: '#0bf'},
-                                    to: {color: '#0bf'},
+                                    from: {color: '#0F406A'},
+                                    to: {color: '#0F406A'},
 
                                     // Set default step function for all animate calls
                                     step: (state, bar) => {
@@ -117,11 +102,11 @@ Live Telemetry
                 <div style="text-align: center; width: 100%; height: 100%; ">
                     <!-- Longitudal -->
                     <svg style="position: absolute; z-index: 100; width: 300; height: 315.06">
-                        <line x1="150" y1="157.53" x2="150" y2="0" style="stroke: #0bf; stroke-width: 10" />
+                        <line x1="150" y1="157.53" x2="150" y2="0" style="stroke: #0F406A; stroke-width: 10" />
                     </svg>
                     <!-- Latitudal -->
                     <svg style="position: absolute; z-index: 100; width: 300; height: 315.06">
-                        <line x1="150" y1="157.53" x2="200" y2="157.53" style="stroke: #0bf; stroke-width: 10" />
+                        <line x1="150" y1="157.53" x2="200" y2="157.53" style="stroke: #0F406A; stroke-width: 10" />
                     </svg>
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUvGb066DdQgDNPGfx3xnKx7ofNn-ZiZeMFELignKjJCnmFKlQnA&s" class="img-fluid" alt="Responsive image" style="z-index: -1; width: 300px;">
                     <p><strong>CG Lat:</strong> 2g</p>
