@@ -1,7 +1,7 @@
 from .models import Lap, QCAR
 from .forms import dataForm, quarterCarForm
 from flask import Blueprint,render_template, redirect, url_for, request, flash, send_file
-from flask_login import LoginManager,login_user,current_user,logout_user, login_required
+# from flask_login import LoginManager,login_user,current_user,logout_user, login_required
 import datetime
 from . import db
 from werkzeug.utils import secure_filename

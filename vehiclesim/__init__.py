@@ -7,6 +7,5 @@ from .lap_time import lap_time
 from .min_speed import calculate_min_speed
 from .max_speed import calculate_max_speed
 from .calculate_lat_long import lat_long
-from .slip_angle import slip_angle
 from .plotting import *
 from .constructors import *
