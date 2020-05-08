@@ -36,4 +36,4 @@ def fetch_data(mat_file, crv_name):
     offset = offset_position - start_position
     crv_array = abs(crv_array)
 
-    return offset, crv_array, array_length, x_array, start_position, end_position, offset, crv_abs
+    return offset, crv_array, array_length, x_array, start_position, end_position, crv_abs

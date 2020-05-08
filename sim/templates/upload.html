@@ -22,6 +22,7 @@ Upload Data
             {{ dataform.mat(class_='custom-file-input') }}
           <label class="custom-file-label" for="customFile">Select .mat File</label>
         </div>
+        
         <div class="input-group mb-3">
             {{ dataform.curvature(placeholder="Curvature",class_='form-control') }}
           <div class="input-group-append">
@@ -61,7 +62,8 @@ Upload Data
         <div class="input-group mb-3">
             {{ dataform.coefficient_of_lift(placeholder="Coefficient of Lift",class_='form-control') }}
         </div>
-        <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit</button>
+        <label for="basic-addon2" class="mb-2">Note: Simulation requires a distance array titled x</label>
+        <button type="submit" class="btn btn-secondary btn-lg btn-block mb-3">Submit</button>
       </div>
     </form>
   </div>
