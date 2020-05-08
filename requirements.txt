@@ -10,3 +10,4 @@ pandas
 matplotlib
 numpy
 mpld3
+pypresence
