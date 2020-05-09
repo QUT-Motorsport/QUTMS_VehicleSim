@@ -10935,3 +10935,9 @@ body.sidebar-toggled footer.sticky-footer {
 .btn-fill-y {
   height: 100% !important;
 }
+
+.image-shrink {
+  width: 100%;
+  height: auto;
+  border-radius: 25px;
+}

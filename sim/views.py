@@ -11,14 +11,19 @@ import sys
 from vehiclesim import *
 from pypresence import Presence
 import matplotlib.pyplot as plt
+from github import Github
 
 # globals
 window_w = window_h = 0
 mat_upload_number = 0
 
+# discord rich presence
 client_id = '708329075546128437'
 RPC = Presence(client_id)
 RPC.connect()
+
+# github
+g = Github("b24074e4521304c06e3bdc4d1583e4a467818c64")
 
 def check_upload_file(form):
     global mat_upload_number
@@ -40,8 +45,28 @@ def check_upload_file(form):
 
 bp = Blueprint('main', __name__)
 
-# Home Page
+# Home page
 @bp.route('/')
+def home():
+    RPC.update(state="Our History", details="Browsing", large_image="qut-logo")
+
+    repo = g.get_repo("QUT-Motorsport/QUTMS_VehicleSim")
+    open_issues = repo.get_issues(state='open')
+    labels = repo.get_topics()
+    commits = repo.get_commits()
+    latest_commits = []
+    for commit in commits[:6]:
+        latest_commit = {}
+        latest_commit["title"] = commit.commit.message
+        latest_commit["url"] = commit.commit.html_url
+        latest_commit["author"] = commit.commit.author.name
+        latest_commit["date"] = commit.commit.author.date
+        latest_commits.append(latest_commit)
+
+    return render_template('home.html', issues=open_issues, labels=labels, commits=latest_commits)
+
+# Telemetry Page
+@bp.route('/telemetry')
 def live_telemetry():
     dataform = dataForm()
     title = 'QUTMS | Live Telemetry'
