@@ -12,3 +12,4 @@ numpy
 mpld3
 pypresence
 PyGithub
+python-dotenv

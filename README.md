@@ -18,6 +18,16 @@ And then install the required libraries
 pip install -r requirements.txt
 ```
 
+For github integration, you will need to create a GitHub API Key
+
+To do this, make a .env file in the root directory, and add the following text
+
+```bash
+GITHUB="xffbafxee64ybe9d019dz0c778f514dcl18tf25f"
+```
+
+Note: The above key isn't real
+
 ## Usage
 
 Launch main.py to start a local instance of the server
