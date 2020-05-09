@@ -138,15 +138,15 @@ def gg_legend(a_lat, a_long):
     yellow = round(((yellow / len(a_lat))*100), 2)
 
     # Create a legend with percentage of time car spends in each section
-    red_label = 'Accel right {}%'.format(red)
-    purple_label = 'Pure accel {}%'.format(purple)
-    green_label = 'Accel left {}%'.format(green)
-    orange_label = 'Right cornering {}%'.format(orange)
+    red_label = 'Accel Right {}%'.format(red)
+    purple_label = 'Pure Accel {}%'.format(purple)
+    green_label = 'Accel Left {}%'.format(green)
+    orange_label = 'Right Cornering {}%'.format(orange)
     black_label= 'Center {}%'.format(black)
-    cyan_label= 'Left cornering {}%'.format(cyan)
-    blue_label= 'Braking right {}%'.format(blue)
-    brown_label= 'Pure braking {}%'.format(brown)
-    yellow_label= 'Braking left {}%'.format(yellow)
+    cyan_label= 'Left Cornering {}%'.format(cyan)
+    blue_label= 'Braking Right {}%'.format(blue)
+    brown_label= 'Pure Braking {}%'.format(brown)
+    yellow_label= 'Braking Left {}%'.format(yellow)
 
     red_patch = mpatches.Patch(color='c', label=red_label)
     purple_patch = mpatches.Patch(color='r', label=purple_label) 

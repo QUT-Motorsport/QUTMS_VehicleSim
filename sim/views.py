@@ -45,7 +45,7 @@ bp = Blueprint('main', __name__)
 def live_telemetry():
     dataform = dataForm()
     title = 'QUTMS | Live Telemetry'
-    RPC.update(state="Telemetry", details="Analyzing...")
+    RPC.update(state="Telemetry", details="Analyzing...", large_image="qut-logo")
     return render_template('live_telemetry.html', title=title, dataform = dataform)
 
 # Upload Lap Page
@@ -53,7 +53,7 @@ def live_telemetry():
 def upload():
     dataform = dataForm()
     title = 'QUTMS | Upload - Lap'
-    RPC.update(state="Simulation", details="Uploading Lap Time")
+    RPC.update(state="Simulation", details="Uploading Lap Time", large_image="qut-logo")
     return render_template('upload.html', title=title, dataform = dataform)
 
 # Analyse table for Plot Mass
@@ -61,7 +61,7 @@ def upload():
 def analysis_lap():
     data = Lap.query.order_by(Lap.id.desc()).all()
     title = 'QUTMS | Analysis'
-    RPC.update(state="Point Mass Lap Simulations", details="Analyzing...")
+    RPC.update(state="Point Mass Lap Simulations", details="Analyzing...", large_image="qut-logo")
     return render_template('analysis_lap.html', title=title, data=data)
 
 # Analyse table for Quarter Car
@@ -69,7 +69,7 @@ def analysis_lap():
 def analysis_qcar():
     data = QCAR.query.order_by(QCAR.id.desc()).all()
     title = 'QUTMS | Analysis'
-    RPC.update(state="Quarter Car", details="Analyzing...")
+    RPC.update(state="Quarter Car", details="Analyzing...", large_image="qut-logo")
     return render_template('analysis_qcar.html', title=title, data=data)
 
 # Analyse table for Editing entries in DB
@@ -78,14 +78,14 @@ def edit():
     data = Lap.query.order_by(Lap.id.desc()).all()
     qcar = QCAR.query.order_by(QCAR.id.desc()).all()
     title = 'QUTMS | Edit'
-    RPC.update(state="Vehicle Simulations", details="Editing")
+    RPC.update(state="Vehicle Simulations", details="Editing", large_image="qut-logo")
     return render_template('edit.html', title=title, data=data,qcar=qcar)
 
 # View Help for VD Symbols
 @bp.route('/help')
 def help():
     title = 'QUTMS | Help'
-    RPC.update(state="Vehicle Dynamics", details="Studying")
+    RPC.update(state="Vehicle Dynamics", details="Studying", large_image="qut-logo")
     return render_template('help.html', title=title)
 
 # Upload parameters for Quarter Car
@@ -93,7 +93,7 @@ def help():
 def qcar_upload():
     dataform = quarterCarForm()
     title = 'QUTMS | QCar'
-    RPC.update(state="Quarter Car", details="Uploading")
+    RPC.update(state="Quarter Car", details="Uploading", large_image="qut-logo")
     return render_template('qcar_upload.html', title=title, dataform=dataform)
 
 # Standard Graph for Plot Mass
@@ -117,7 +117,7 @@ def graph(id, width=None, height=None):
     graph_html, fastest_lap, min_speed, max_speed = plotMassLapSim(matfile, id.curvature, int(width), int(height), 9.81, id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
     title = 'QUTMS | Graph'
 
-    RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(fastest_lap), details=str(id.name) + ' - GG Diagram')
+    RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(fastest_lap), details=str(id.name) + ' - GG Diagram', large_image="qut-logo")
     return render_template('graph.html',min_speed=min_speed,max_speed=max_speed, graph_html=graph_html,title=title, name=id.name, fastest_lap=fastest_lap[2:], id=id)
 
 # GG Only Diagram for Plot Mass
@@ -140,7 +140,7 @@ def gg_diagram(id, width=None, height=None):
     matfile = os.path.join(BASE_PATH, 'static/mat', id.mat)
     graph_html, fastest_lap, min_speed, max_speed = plotMassGG(matfile, id.curvature, int(width), int(height), 9.81, id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
     title = 'QUTMS | GG Diagram'
-    RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(fastest_lap), details=str(id.name))
+    RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(fastest_lap), details=str(id.name), large_image="qut-logo")
     return render_template('gg_diagram.html',id=id,min_speed=min_speed,max_speed=max_speed, graph_html=graph_html,title=title, name=id.name, fastest_lap=fastest_lap[2:])
 
 # Delete Lap Entry
@@ -230,7 +230,7 @@ def export_generate_all():
     #save as svg internally
     fig.savefig('sim/static/svg/graph_all.svg')
     # update discord
-    RPC.update(state="Simulations", details="Exporting")
+    RPC.update(state="Simulations", details="Exporting", large_image="qut-logo")
     #return svg to client
     return send_file('static/svg/graph_all.svg', as_attachment=True, attachment_filename='graph_output_all.svg')   
 
@@ -242,7 +242,7 @@ def export_generate_gg():
     #save as svg internally
     fig_gg.savefig('sim/static/svg/graph_gg.svg')
     # update discord
-    RPC.update(state="GG Diagram", details="Exporting")
+    RPC.update(state="GG Diagram", details="Exporting", large_image="qut-logo")
     #return svg to client
     return send_file('static/svg/graph_gg.svg', as_attachment=True, attachment_filename='graph_output_gg.svg')
 
