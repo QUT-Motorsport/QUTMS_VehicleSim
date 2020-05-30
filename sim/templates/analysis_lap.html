@@ -32,19 +32,6 @@ Analysis
               <th></th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Mass</th>
-                <th>Power</th>
-                <th>Air Density</th>
-                <th>Reference Area</th>
-                <th>Coefficient of Drag</th>
-                <th>Coefficient of Friction</th>
-                <th>Coefficient of Lift</th>
-                <th></th>
-            </tr>
-          </tfoot>
           <tbody>
           {% if data is defined %}
             {% for item in data %}
@@ -58,7 +45,7 @@ Analysis
               <td>{{item.coefficient_of_friction}}</td>
               <td>{{item.coefficient_of_lift}}</td>
               <td class="btn-view">
-                <a href = '/graph/{{item.id}}'class="btn btn-secondary btn-lg btn-block btn-square h-100">View</button>
+                <a href = '/graph/{{item.id}}'class="btn btn-secondary btn-lg btn-square btn-fill-y">View</button>
               </td>
               
             </tr>

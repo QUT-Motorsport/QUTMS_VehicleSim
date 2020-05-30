@@ -14,6 +14,10 @@ def fetch_data(mat_file, crv_name):
         x_array = track_data[str(struct)]['x'][0][0][0]
     except:
         x_array = []
+    try:
+        t_array = track_data[str(struct)]['t'][0][0][0]
+    except:
+        t_array = []
 
     crv_abs = []
 
@@ -36,4 +40,4 @@ def fetch_data(mat_file, crv_name):
     offset = offset_position - start_position
     crv_array = abs(crv_array)
 
-    return offset, crv_array, array_length, x_array, start_position, end_position, crv_abs
+    return offset, crv_array, array_length, x_array, start_position, end_position, crv_abs, t_array

@@ -33,3 +33,23 @@ class quarterCarForm(FlaskForm):
     bumpnonlinear = FloatField("Bump Non-Linear",validators=[InputRequired()])
     bumphysteresis = FloatField("Non-Linear with Hysteresis",validators=[InputRequired()])
     submit = SubmitField("Submit")
+
+class accumulatorForm(FlaskForm):
+    
+    name = StringField("Name", validators=[InputRequired()])
+    FoS = FloatField("FoS",validators=[InputRequired()])
+    regen = FloatField("Regen",validators=[InputRequired()])
+    cellMass = FloatField("Cell Mass",validators=[InputRequired()])
+    accumBoxMass = FloatField("Accumulator Mass",validators=[InputRequired()])
+    vehicleMass = FloatField("Vehicle Mass",validators=[InputRequired()])
+    driverMass = FloatField("driverMass",validators=[InputRequired()])
+    rollingResistanceCoefficient = FloatField("Rolling Resistance Coefficient",validators=[InputRequired()])
+    wheelbase = FloatField("Wheelbase",validators=[InputRequired()])
+    gradient = FloatField("Gradient",validators=[InputRequired()])
+    frontAxel = FloatField("Front Axel",validators=[InputRequired()])
+    rearAxel = FloatField("Rear Axel",validators=[InputRequired()])
+    airVelocity = FloatField("Air Velocity",validators=[InputRequired()])
+    gearRatio = FloatField("Gear Ratio",validators=[InputRequired()])
+    efficiency = FloatField("Efficiency",validators=[InputRequired()])
+    wheelRadius = FloatField("Wheel Radius",validators=[InputRequired()])
+    submit = SubmitField("Submit")

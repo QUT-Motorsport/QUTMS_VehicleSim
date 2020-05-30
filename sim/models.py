@@ -45,3 +45,30 @@ class QCAR(db.Model):
                               self.damperscompression, self.dampersrebound, self.tireslinear, 
                               self.tiresnonlinear,self.tireslift,self.bumplinear,
                               self.bumpnonlinear,self.bumphysteresis)
+
+class Accumulator(db.Model):
+    __tablename__='accumulator' # good practice to specify table name
+    id = db.Column(db.String, primary_key=True)
+    name = db.Column(db.String(255), index=True, nullable=False)
+    FoS = db.Column(db.Float)
+    regen = db.Column(db.Float)
+    cellMass = db.Column(db.Float)
+    accumBoxMass = db.Column(db.Float)
+    vehicleMass = db.Column(db.Float) # Excludes Driver, Accumulator Box/Hardware and Cells
+    driverMass = db.Column(db.Float)
+    rollingResistanceCoefficient = db.Column(db.Float)
+    wheelbase = db.Column(db.Float)
+    gradient = db.Column(db.Float)
+    frontAxel = db.Column(db.Float) # longitudinal distance between front axel to the centre of gravity (Any input is multiplied by L)
+    rearAxel = db.Column(db.Float) # longitudinal distance between rear axel to the centre of gravity (Any input is multiplied by L)
+    airVelocity = db.Column(db.Float) # Wind
+    gearRatio = db.Column(db.Float)
+    efficiency = db.Column(db.Float)
+    wheelRadius = db.Column(db.Float)
+    def __repr__(self): #string print method
+        return "<id: {}, name: {}, FoS: {}, regen: {}, cellMass: {}, accumBoxMass: {}, vehicleMass:{}, driverMass:{}, rollingResistanceCoefficient:{}, wheelbase: {}, gradient: {}, frontAxel: {}, rearAxel: {},bumphysteresis: {},>".format(
+                              self.id, self.name, self.FoS, 
+                              self.regen, self.cellMass, self.accumBoxMass, 
+                              self.vehicleMass, self.driverMass, self.rollingResistanceCoefficient, 
+                              self.wheelbase,self.gradient,self.frontAxel,
+                              self.rearAxel,self.airVelocity, self.gearRatio, self.efficiency, self.wheelRadius)

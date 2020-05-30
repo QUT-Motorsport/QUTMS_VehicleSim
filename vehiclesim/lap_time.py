@@ -13,7 +13,7 @@ def lap_time(velocity, pos_list):
             time[i] = distance[i]/velocity[i]
         lap_time += time[i]
 
-    return str(timedelta(seconds=round(lap_time, 2)))[:-4]
+    return str(timedelta(seconds=round(lap_time, 2)))[:-4], time
 
 
     
