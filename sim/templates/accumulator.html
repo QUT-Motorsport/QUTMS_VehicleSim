@@ -16,10 +16,60 @@ Accumulator
 {% endblock %}
 
 {% block content %}
+{% if data != [] %}
+<div class="card mb-5">
+    <div class="card-header">
+      <i class="fas fa-table"></i>
+      Accumulator Tests</div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>FoS</th>
+              <th>regen</th>
+              <th>efficiency</th>
+              <th>cellMass</th>
+              <th>accumBoxMass</th>
+              <th>vehicleMass</th>
+              <th>driverMass</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data %}
+            <tr>
+              <td>{{item.name}}</td>
+              <td>{{item.FoS}}</td>
+              <td>{{item.regen}}</td>
+              <td>{{item.efficiency}}</td>
+              <td>{{item.cellMass}}</td>
+              <td>{{item.accumBoxMass}}</td>
+              <td>{{item.vehicleMass}}</td>
+              <td>{{item.driverMass}}</td>
+              <td class="btn-view">
+                <a href = '/roadload/{{item.id}}'class="btn btn-secondary btn-lg btn-square btn-fill-y btn-fill-x">View</button>
+              </td>
+              
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% if data[0] is defined %}
+    {% set date = data[0].id .split(' ') %}
+    {% set time = date[1].split('.') %}
+    <div class="card-footer small text-muted">Updated at {{ date[0] }} at {{time[0]}}</div>
+    {% endif %}
+</div>
+{% endif %}
 {% import "bootstrap/wtf.html" as wtf %}
 <div class="row">
   <div class="col">
-    <form action={{ url_for('main.accumulator_data') }} method="post" class="form" role="form">
+    <form action={{ url_for('main.accumulator_data', identity=id.id) }} method="post" class="form" role="form">
       <div class="col form-wrapper">
             {{ dataform.csrf_token }}
         <div class="input-group mb-3">

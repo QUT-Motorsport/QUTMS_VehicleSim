@@ -230,9 +230,11 @@ def accumulator(id, width=None, height=None):
     title = 'QUTMS | Accumulator'
     dataform = accumulatorForm()
 
+    data = Accumulator.query.order_by(Accumulator.id.desc()).all()
+
     if rpc_activated:
         RPC.update(state= "A Chunky Accumulator", details='Modelling', large_image="qut-logo")
-    return render_template('accumulator.html', name=id.name, id=id, title=title, dataform=dataform)
+    return render_template('accumulator.html', name=id.name, id=id, title=title, dataform=dataform, data=data)
 
 
 # Delete Lap Entry
@@ -315,8 +317,8 @@ def qcar_data():
     return redirect(url_for('main.qcar_upload'))
 
 # Upload data for Quarter Car
-@bp.route('/upload/accumulator', methods=['GET','POST'])
-def accumulator_data():
+@bp.route('/upload/accumulator/<identity>', methods=['GET','POST'])
+def accumulator_data(identity):
     dataform = accumulatorForm()
     if dataform.validate_on_submit():
         newitem = Accumulator(id = datetime.datetime.now(),
@@ -343,7 +345,7 @@ def accumulator_data():
         db.session.commit()
         flash('The file was successfully uploaded to the database', 'success')
         print('Added', 'success')
-    return redirect(url_for('main.accumulator'))
+    return redirect(url_for('main.accumulator', id=identity))
 
 # download .mat file of stats
 @bp.route('/export_mat', methods=['GET', "POST"])
