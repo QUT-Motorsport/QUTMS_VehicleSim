@@ -1,7 +1,6 @@
 from .models import Lap, QCAR, Accumulator
 from .forms import dataForm, quarterCarForm, accumulatorForm
 from flask import Blueprint,render_template, redirect, url_for, request, flash, send_file
-# from flask_login import LoginManager,login_user,current_user,logout_user, login_required
 import datetime
 from . import db
 from werkzeug.utils import secure_filename
@@ -14,7 +13,6 @@ import matplotlib.pyplot as plt
 from github import Github
 from dotenv import load_dotenv, find_dotenv
 from scipy.io import savemat
-
 # globals
 window_w = window_h = 0
 mat_upload_number = 0
@@ -378,4 +376,3 @@ def export_generate_gg():
     #return svg to client
     return send_file('static/svg/graph_gg.svg', as_attachment=True, attachment_filename='graph_output_gg.svg')
 
-    

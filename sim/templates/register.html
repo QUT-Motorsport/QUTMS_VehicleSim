@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+Register
+{% endblock %}
+
+
+
+{% block content %}
+{% import "bootstrap/wtf.html" as wtf %}
+<div class="row">
+  <div class="col">
+    {{wtf.quick_form(registerform, action=url_for('auth.register'))}} 
+  </div>
+  
+  <div class="col-md-4 rear-car mb-3">
+    <img src="{{ url_for('static',filename='img/front_car_ev.jpg') }}" alt="">
+  </div>
+</div>
+{% endblock %}
