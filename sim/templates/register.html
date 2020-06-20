@@ -1,20 +1,39 @@
-{% extends 'base.html' %}
+<head>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- Custom styles for this template-->
+  <link rel= "stylesheet" href= "{{ url_for('static',filename='css/account.css') }}">
+</head>
 
-{% block breadcrumb %}
-Register
-{% endblock %}
-
-
-
-{% block content %}
 {% import "bootstrap/wtf.html" as wtf %}
-<div class="row">
-  <div class="col">
-    {{wtf.quick_form(registerform, action=url_for('auth.register'))}} 
-  </div>
-  
-  <div class="col-md-4 rear-car mb-3">
-    <img src="{{ url_for('static',filename='img/front_car_ev.jpg') }}" alt="">
+<div class="force-contrainer">
+  <img src="{{ url_for('static',filename='img/lab_bg.jpg') }}" alt="User Background" style="opacity: 0.5;">
+
+  <div class="wrapper fadeInDown">
+    
+    <div id="formContent">
+
+      <!-- Tabs Titles -->
+
+      <!-- Icon -->
+      <div class="fadeIn first mt-5 mb-1">
+        <img src="{{ url_for('static',filename='img/QUTMS_Logo_Blue.jpg') }}" alt="User Icon" id="icon">
+      </div>
+
+      <!-- Login Form -->
+      <form>
+        <input type="text" id="login" class="fadeIn second" name="login" placeholder="Username">
+        <input type="text" id="password" class="fadeIn third" name="login" placeholder="Password">
+        <input type="text" id="password" class="fadeIn third" name="login" placeholder="Confirm Password">
+        <input type="submit" class="fadeIn fourth" value="Register">
+      </form>
+
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" href="#">Forgot Password?</a>
+      </div>
+
+    </div>
   </div>
 </div>
-{% endblock %}

@@ -11,9 +11,9 @@ class LoginForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
-    password = PasswordField('New Password', [InputRequired(), EqualTo('confirm', message='Passwords must match')])
-    confirm  = PasswordField('Repeat Password')
-    submit = SubmitField("Submit")
+    password = PasswordField('Enter Password', [InputRequired(), EqualTo('confirm', message='Passwords must match')])
+    confirm  = PasswordField('Confirm Password')
+    submit = SubmitField("Register")
 
 class dataForm(FlaskForm):
     
