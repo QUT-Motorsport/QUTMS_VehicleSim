@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import sys
 from vehiclesim import *
+from qcarsim import *
 from pypresence import Presence
 import matplotlib.pyplot as plt
 from github import Github
@@ -113,6 +114,29 @@ def analysis_qcar():
     if rpc_activated:
         RPC.update(state="Quarter Car", details="Analyzing...", large_image="qut-logo")
     return render_template('analysis_qcar.html', title=title, data=data)
+
+# Standard Output for QCAR Model
+@bp.route('/qcar/<id>', defaults={'width': None, 'height': None})
+@bp.route('/qcar/<id>/<width>/<height>')
+def qcar(id, width=None, height=None):
+
+    # Fetch Browser Height and Width
+    if not width or not height:
+        return """
+        <script>
+        (() => window.location.href = window.location.href +
+        ['', window.innerWidth, window.innerHeight].join('/'))()
+        </script>
+        """
+
+    # Fetch QCAR instance by ID
+    id = QCAR.query.filter_by(id=id).first()
+    example_html = "<p>Test this</p>" # DELETE LINE ONCE UNDERSTOOD
+    example_output = dummy_output(50)
+
+    title = 'QUTMS | QCAR'
+    return render_template('qcar_output.html',title=title,id=id,name=id.name,output_html=example_output)
+
 
 # Analyse table for Editing entries in DB
 @bp.route('/edit')
