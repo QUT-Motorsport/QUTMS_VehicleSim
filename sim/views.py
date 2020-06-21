@@ -74,10 +74,10 @@ def home():
             latest_commit["author"] = commit.commit.author.name
             latest_commit["date"] = commit.commit.author.date
             latest_commits.append(latest_commit)
+        return render_template('home.html', issues=open_issues, labels=labels, commits=latest_commits)
     except:
-        print("Github API Call was unsuccessful")
-
-    return render_template('home.html', issues=open_issues, labels=labels, commits=latest_commits)
+        print("Github API Call was unsuccessful")       
+        return render_template('home.html')
 
 # Telemetry Page
 @bp.route('/telemetry')
