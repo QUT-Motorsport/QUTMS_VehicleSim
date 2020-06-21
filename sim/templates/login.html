@@ -20,11 +20,24 @@
       <div class="fadeIn first mt-5 mb-1">
         <img src="{{ url_for('static',filename='img/QUTMS_Logo_Blue.jpg') }}" alt="User Icon" id="icon">
       </div>
+{% with messages = get_flashed_messages() %}              
+{% if messages %}
+  <ol style="margin-right:auto;"class=flashes>
+    {% for message in messages %}
+    <div class="alert alert-info" role="alert">
+      {{message}}              
+    </div>
+    {% endfor %}
+
+  </ol>
+{% endif %}            
+{% endwith %}
 
       <!-- Login Form -->
-      <form>
-        <input type="text" id="login" class="fadeIn second" name="login" placeholder="Username">
-        <input type="text" id="password" class="fadeIn third" name="login" placeholder="Password">
+      <form action={{ url_for('auth.log') }} method="POST" role="form">
+        {{ login_form.csrf_token }}
+        {{ login_form.username(placeholder="Username",class_='fadeIn second',type="text",id="login") }}
+        {{ login_form.password(placeholder="Password",class_='fadeIn third',type="text",id="password") }}
         <input type="submit" class="fadeIn fourth" value="Login">
       </form>
 

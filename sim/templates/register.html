@@ -11,7 +11,18 @@
   <img src="{{ url_for('static',filename='img/lab_bg.jpg') }}" alt="User Background" style="opacity: 0.5;">
 
   <div class="wrapper fadeInDown">
-    
+    {% with messages = get_flashed_messages() %}              
+{% if messages %}
+  <ol style="margin-right:auto;"class=flashes>
+    {% for message in messages %}
+    <div class="alert alert-info" role="alert">
+      {{message}}              
+    </div>
+    {% endfor %}
+
+  </ol>
+{% endif %}            
+{% endwith %}
     <div id="formContent">
 
       <!-- Tabs Titles -->
@@ -22,11 +33,13 @@
       </div>
 
       <!-- Login Form -->
-      <form>
-        <input type="text" id="login" class="fadeIn second" name="login" placeholder="Username">
-        <input type="text" id="password" class="fadeIn third" name="login" placeholder="Password">
-        <input type="text" id="password" class="fadeIn third" name="login" placeholder="Confirm Password">
-        <input type="submit" class="fadeIn fourth" value="Register">
+      <form action={{ url_for('auth.register') }} method="POST" role="form">
+        {{ registerform.csrf_token }}
+        {{ registerform.username(placeholder="Username",class_='fadeIn second',type="text",id="username") }}
+        {{ registerform.password(placeholder="Password",class_='fadeIn third',type="text",id="password") }}
+        {{ registerform.confirm(placeholder="Confirm Password",class_='fadeIn fourth',type="text",id="confirm") }}
+
+        <input type="submit" class="fadeIn fifth" value="register">
       </form>
 
       <!-- Remind Passowrd -->

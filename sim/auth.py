@@ -64,7 +64,6 @@ def reg():
 def register():
     registerform = RegisterForm()
     if registerform.validate_on_submit():
-        print('Register Form Submitted', registerform)
         #get username,password and email from the form
         username = registerform.username.data
         password = registerform.password.data
