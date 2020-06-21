@@ -22,9 +22,9 @@
       </div>
 {% with messages = get_flashed_messages() %}              
 {% if messages %}
-  <ol style="margin-right:auto;"class=flashes>
+  <ol style="margin:auto;padding:2px"class='fadeIn fl'>
     {% for message in messages %}
-    <div class="alert alert-info" role="alert">
+    <div  role="alert">
       {{message}}              
     </div>
     {% endfor %}
@@ -37,7 +37,7 @@
       <form action={{ url_for('auth.log') }} method="POST" role="form">
         {{ login_form.csrf_token }}
         {{ login_form.username(placeholder="Username",class_='fadeIn second',type="text",id="login") }}
-        {{ login_form.password(placeholder="Password",class_='fadeIn third',type="text",id="password") }}
+        {{ login_form.password(placeholder="Password",class_='fadeIn third',type="password",id="password") }}
         <input type="submit" class="fadeIn fourth" value="Login">
       </form>
 

@@ -13,9 +13,9 @@
   <div class="wrapper fadeInDown">
     {% with messages = get_flashed_messages() %}              
 {% if messages %}
-  <ol style="margin-right:auto;"class=flashes>
+  <ol style="margin-right:auto;padding:2px"class='fadeIn fl'>
     {% for message in messages %}
-    <div class="alert alert-info" role="alert">
+    <div role="alert">
       {{message}}              
     </div>
     {% endfor %}
@@ -36,8 +36,8 @@
       <form action={{ url_for('auth.register') }} method="POST" role="form">
         {{ registerform.csrf_token }}
         {{ registerform.username(placeholder="Username",class_='fadeIn second',type="text",id="username") }}
-        {{ registerform.password(placeholder="Password",class_='fadeIn third',type="text",id="password") }}
-        {{ registerform.confirm(placeholder="Confirm Password",class_='fadeIn fourth',type="text",id="confirm") }}
+        {{ registerform.password(placeholder="Password",class_='fadeIn third',type="password",id="password") }}
+        {{ registerform.confirm(placeholder="Confirm Password",class_='fadeIn fourth',type="password",id="confirm") }}
 
         <input type="submit" class="fadeIn fifth" value="register">
       </form>
