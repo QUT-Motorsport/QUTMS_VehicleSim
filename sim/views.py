@@ -131,23 +131,32 @@ def qcar(id, width=None, height=None):
 
     # Fetch QCAR instance by ID
     id = QCAR.query.filter_by(id=id).first()
-    qcar_m_s = id.sprungmass
-    qcar_m_u = id.unsprungmass
-    qcar_s_l = id.linearspring
-    qcar_s_nl = id.nonlinearspring
-    qcar_d_c = id.damperscompression
-    qcar_d_r = id.dampersrebound
-    qcar_t_l = id.tireslinear
-    qcar_t_nl = id.tiresnonlinear
-    qcar_t_L = id.tireslift
-    qcar_b_l = id.bumplinear
-    qcar_b_nl = id.bumpnonlinear
-    qcar_b_h = id.bumphysteresis
+    qcar_m_s = id.sprungmass            # Sprung Mass           (kg)
+    qcar_m_u = id.unsprungmass          # Unsprung Mass         (kg)
+    qcar_s_l = id.linearspring          # Linear Spring Rate?   (N/m)
+    qcar_s_nl = id.nonlinearspring      # Non-Linear Spring?    (?)
+    qcar_d_c = id.damperscompression    # Dampering Ratio Comp? (ratio)
+    qcar_d_r = id.dampersrebound        # Dampers Rebound?      (?)
+    qcar_t_l = id.tireslinear           # Tires Linear?         (?)
+    qcar_t_nl = id.tiresnonlinear       # Tires Non-Linear?     (?)
+    qcar_t_L = id.tireslift             # Tires Lift?           (?)
+    qcar_b_l = id.bumplinear            # Bump Linear?          (?)
+    qcar_b_nl = id.bumpnonlinear        # Bump Non-Linear?      (?)
+    qcar_b_h = id.bumphysteresis        # Bump Hysteresis?      (?)
 
-    headings = ["Sprung Mass Natural Frequency", "Sprung Mass Damped Frequency",
-                "Unsprung Mass Natural Frequency", "Unsprung Mass Damped Frequency",
+    headings = ["Sprung Mass Natural Frequency (Hz)",
+                "Sprung Mass Damped Frequency (Hz)",
+                "Unsprung Mass Natural Frequency",
+                "Unsprung Mass Damped Frequency",
                 "Eigen Values and Eigen Vectors of the Quarter Car"]
-    values = [0, 0, 0, 0, 0]
+
+    values = [calc_sprung_mass_natural_frequency(qcar_m_s, qcar_s_l, 3), 
+              calc_sprung_mass_damped_frequency(qcar_m_s, qcar_s_l, qcar_d_c, 3),
+              calc_unsprung_mass_natural_frequency(),
+              calc_unsprung_mass_damped_frequency(),
+              calc_eigen_values_and_Vectors_of_quarter_car()]
+
+
 
     data = load_template(headings, values)
 
