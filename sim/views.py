@@ -131,11 +131,28 @@ def qcar(id, width=None, height=None):
 
     # Fetch QCAR instance by ID
     id = QCAR.query.filter_by(id=id).first()
-    example_html = "<p>Test this</p>" # DELETE LINE ONCE UNDERSTOOD
-    example_output = dummy_output(50)
+    qcar_m_s = id.sprungmass
+    qcar_m_u = id.unsprungmass
+    qcar_s_l = id.linearspring
+    qcar_s_nl = id.nonlinearspring
+    qcar_d_c = id.damperscompression
+    qcar_d_r = id.dampersrebound
+    qcar_t_l = id.tireslinear
+    qcar_t_nl = id.tiresnonlinear
+    qcar_t_L = id.tireslift
+    qcar_b_l = id.bumplinear
+    qcar_b_nl = id.bumpnonlinear
+    qcar_b_h = id.bumphysteresis
+
+    headings = ["Sprung Mass Natural Frequency", "Sprung Mass Damped Frequency",
+                "Unsprung Mass Natural Frequency", "Unsprung Mass Damped Frequency",
+                "Eigen Values and Eigen Vectors of the Quarter Car"]
+    values = [0, 0, 0, 0, 0]
+
+    data = load_template(headings, values)
 
     title = 'QUTMS | QCAR'
-    return render_template('qcar_output.html',title=title,id=id,name=id.name,output_html=example_output)
+    return render_template('qcar_output.html',title=title,id=id,name=id.name,output_html=data)
 
 
 # Analyse table for Editing entries in DB
