@@ -144,18 +144,19 @@ def qcar(id, width=None, height=None):
     qcar_b_nl = id.bumpnonlinear        # Bump Non-Linear?      (?)
     qcar_b_h = id.bumphysteresis        # Bump Hysteresis?      (?)
 
+    qcar_primitive = primitives(qcar_m_s, qcar_s_l, qcar_d_c)
+
     headings = ["Sprung Mass Natural Frequency (Hz)",
                 "Sprung Mass Damped Frequency (Hz)",
                 "Unsprung Mass Natural Frequency",
                 "Unsprung Mass Damped Frequency",
                 "Eigen Values and Eigen Vectors of the Quarter Car"]
 
-    values = [calc_sprung_mass_natural_frequency(qcar_m_s, qcar_s_l, 3), 
-              calc_sprung_mass_damped_frequency(qcar_m_s, qcar_s_l, qcar_d_c, 3),
-              calc_unsprung_mass_natural_frequency(),
-              calc_unsprung_mass_damped_frequency(),
-              calc_eigen_values_and_Vectors_of_quarter_car()]
-
+    values = [qcar_primitive.get_sprung_mass_natural_frequency(),
+              qcar_primitive.get_sprung_mass_damped_frequency(),
+              qcar_primitive.get_unsprung_mass_natural_frequency(),
+              qcar_primitive.get_unsprung_mass_damped_frequency(),
+              qcar_primitive.get_eigen_values()]
 
 
     data = load_template(headings, values)

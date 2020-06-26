@@ -1,3 +1,3 @@
-from .calc_fund_freq import *
+from .primitives import *
 from .output import *
 from .constructors import *
