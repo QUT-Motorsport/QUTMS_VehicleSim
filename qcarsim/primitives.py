@@ -1,7 +1,7 @@
 from numpy import pi
 from math import sqrt
 
-class primatives:
+class primitives:
     """
     Stores and return values needed for output and calculations of QCar Model
     For values that are not arrays, and require one single instance
