@@ -39,8 +39,7 @@ class primatives:
         Resources:
         https://en.wikipedia.org/wiki/Vibration#Free_vibration_with_damping
         """
-        natural_frequency = self.get_sprung_mass_natural_frequency()
-        return round(natural_frequency*sqrt(1-(self.damping_ratio_compression**2)), 3)
+        return round(self.get_sprung_mass_natural_frequency()*sqrt(1-(self.damping_ratio_compression**2)), 3)
 
     def get_unsprung_mass_natural_frequency(self):
         return 3
