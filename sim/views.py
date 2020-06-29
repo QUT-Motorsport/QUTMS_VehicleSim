@@ -1,20 +1,18 @@
 from .models import Lap, QCAR, Accumulator
 from .forms import dataForm, quarterCarForm, accumulatorForm
-from flask import Blueprint,render_template, redirect, url_for, request, flash, send_file
-# from flask_login import LoginManager,login_user,current_user,logout_user, login_required
+from flask import Blueprint, render_template, redirect, url_for, request, flash, send_file
 import datetime
 from . import db
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import sys
-from vehiclesim import *
-from qcarsim import *
+from plotmass import PlotMassSimulation
 from pypresence import Presence
-import matplotlib.pyplot as plt
 from github import Github
 from dotenv import load_dotenv, find_dotenv
 from scipy.io import savemat
+import pickle
 
 # globals
 window_w = window_h = 0
@@ -34,12 +32,15 @@ except:
 load_dotenv(find_dotenv())
 g = Github(os.getenv("GITHUB"))
 
+# Initalise blueprint
+bp = Blueprint('main', __name__)
+
+# Helper functions
 
 def check_upload_file(form):
     global mat_upload_number
     # get file data from form
     fp = form.mat.data
-    filename= fp.filename
     # get the current path of the module file... store file relative to this path
     BASE_PATH= os.path.dirname(__file__)
     
@@ -53,7 +54,10 @@ def check_upload_file(form):
     fp.save(upload_path)
     return db_upload_path
 
-bp = Blueprint('main', __name__)
+def fetch_mat_file(mat_name):
+    BASE_PATH = os.path.dirname(__file__)
+    matfile = os.path.join(BASE_PATH, 'static/mat', mat_name)
+    return matfile
 
 # Home page
 @bp.route('/')
@@ -169,6 +173,8 @@ def qcar_upload():
 @bp.route('/graph/<id>', defaults={'width': None, 'height': None})
 @bp.route('/graph/<id>/<width>/<height>')
 def graph(id, width=None, height=None):
+
+    # Add width and height to URL for graph sizing
     if not width or not height:
         return """
         <script>
@@ -177,22 +183,33 @@ def graph(id, width=None, height=None):
         </script>
         """
 
-    id = Lap.query.filter_by(id=id).first()
-    path = os.path.dirname(__file__)
-
-    BASE_PATH= os.path.dirname(__file__)
-    
-    matfile = os.path.join(BASE_PATH, 'static/mat', id.mat)
-    graph_html, fastest_lap, min_speed, max_speed = plotMassLapSim(matfile, id.curvature, int(width), int(height), 9.81, id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
+    # Set tab title
     title = 'QUTMS | Graph'
+
+    # Fetch lap instance from DB
+    id = Lap.query.filter_by(id=id).first()
+
+    # Fetch mat file for simulation input
+    matfile = fetch_mat_file(id.mat)
+
+    # Initialise Simulation
+    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
+
+    # Pickle graph & stats for download
+    simulation.pickle(simulation.plot(), "graph_all.p")
+
+    # Update discord rich presence
     if rpc_activated:
-        RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(fastest_lap), details=str(id.name) + ' - GG Diagram', large_image="qut-logo")
-    return render_template('graph.html',min_speed=min_speed,max_speed=max_speed, graph_html=graph_html,title=title, name=id.name, fastest_lap=fastest_lap[2:], id=id)
+        RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(simulation.get_fastest_lap()), details=str(id.name) + ' - View Plots', large_image="qut-logo")
+
+    return render_template('graph.html', graph_html=simulation.plot_html(), title=title, name=id.name, fastest_lap=simulation.get_fastest_lap()[2:], id=id)
 
 # GG Only Diagram for Plot Mass
 @bp.route('/gg/<id>', defaults={'width': None, 'height': None})
 @bp.route('/gg/<id>/<width>/<height>')
 def gg_diagram(id, width=None, height=None):
+
+    # Add width and height to URL for graph sizing
     if not width or not height:
         return """
         <script>
@@ -201,22 +218,33 @@ def gg_diagram(id, width=None, height=None):
         </script>
         """
 
-    id = Lap.query.filter_by(id=id).first()
-    path = os.path.dirname(__file__)
-
-    BASE_PATH= os.path.dirname(__file__)
-    
-    matfile = os.path.join(BASE_PATH, 'static/mat', id.mat)
-    graph_html, fastest_lap, min_speed, max_speed = plotMassGG(matfile, id.curvature, int(width), int(height), 9.81, id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
+    # Set tab title
     title = 'QUTMS | GG Diagram'
+
+    # Fetch lap instance from DB
+    id = Lap.query.filter_by(id=id).first()
+
+    # Fetch mat file for simulation input
+    matfile = fetch_mat_file(id.mat)
+
+    # Initialise Simulation
+    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
+    
+    # Pickle graph & stats for download
+    simulation.pickle(simulation.plot_gg(), "graph_gg.p")
+
+    # Update discord rich presence
     if rpc_activated:
-        RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(fastest_lap), details=str(id.name), large_image="qut-logo")
-    return render_template('gg_diagram.html',id=id,min_speed=min_speed,max_speed=max_speed, graph_html=graph_html,title=title, name=id.name, fastest_lap=fastest_lap[2:])
+        RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(simulation.get_fastest_lap()), details=str(id.name), large_image="qut-logo")
+
+    return render_template('gg_diagram.html', id=id, graph_html=simulation.plot_gg_html(), title=title, name=id.name, fastest_lap=simulation.get_fastest_lap()[2:])
 
 # Standard Graph for Speed v Curvature
 @bp.route('/speedcurvature/<id>', defaults={'width': None, 'height': None})
 @bp.route('/speedcurvature/<id>/<width>/<height>')
 def speedcurvature(id, width=None, height=None):
+
+    # Add width and height to URL for graph sizing
     if not width or not height:
         return """
         <script>
@@ -225,18 +253,26 @@ def speedcurvature(id, width=None, height=None):
         </script>
         """
 
-    id = Lap.query.filter_by(id=id).first()
-    path = os.path.dirname(__file__)
-
-    BASE_PATH= os.path.dirname(__file__)
-    
-    matfile = os.path.join(BASE_PATH, 'static/mat', id.mat)
-    graph_html, fastest_lap, min_speed, max_speed = plotMassSpeedCurvature(matfile, id.curvature, int(width), int(height), 9.81, id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
+    # Set tab title
     title = 'QUTMS | Speed v Curvature'
 
+    # Fetch lap instance from DB
+    id = Lap.query.filter_by(id=id).first()
+
+    # Fetch mat file for simulation input
+    matfile = fetch_mat_file(id.mat)
+
+    # Initialise Simulation
+    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
+    
+    # Pickle graph & stats for download
+    simulation.pickle(simulation.plot_speed_curvature(), "graph_curvature.p")
+
+    # Update discord rich presence
     if rpc_activated:
-        RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(fastest_lap), details=str(id.name) + ' - Speed v Curvature', large_image="qut-logo")
-    return render_template('speedcurvature.html',min_speed=min_speed,max_speed=max_speed, graph_html=graph_html,title=title, name=id.name, fastest_lap=fastest_lap[2:], id=id)
+        RPC.update(state= str(int(id.mass)) + 'kg @ ' + str(int(id.power)) + 'W - ' + str(simulation.get_fastest_lap()), details=str(id.name) + ' - Speed v Curvature', large_image="qut-logo")
+
+    return render_template('speedcurvature.html', graph_html=simulation.plot_speed_curvature_html(), title=title, name=id.name, fastest_lap=simulation.get_fastest_lap()[2:], id=id)
 
 # Standard Graph for Accumulator modelling
 @bp.route('/accumulator/<id>', defaults={'width': None, 'height': None})
@@ -254,9 +290,11 @@ def accumulator(id, width=None, height=None):
     title = 'QUTMS | Accumulator'
     dataform = accumulatorForm()
 
+    data = Accumulator.query.order_by(Accumulator.id.desc()).all()
+
     if rpc_activated:
         RPC.update(state= "A Chunky Accumulator", details='Modelling', large_image="qut-logo")
-    return render_template('accumulator.html', name=id.name, id=id, title=title, dataform=dataform)
+    return render_template('accumulator.html', name=id.name, id=id, title=title, dataform=dataform, data=data)
 
 
 # Delete Lap Entry
@@ -339,8 +377,8 @@ def qcar_data():
     return redirect(url_for('main.qcar_upload'))
 
 # Upload data for Quarter Car
-@bp.route('/upload/accumulator', methods=['GET','POST'])
-def accumulator_data():
+@bp.route('/upload/accumulator/<identity>', methods=['GET','POST'])
+def accumulator_data(identity):
     dataform = accumulatorForm()
     if dataform.validate_on_submit():
         newitem = Accumulator(id = datetime.datetime.now(),
@@ -367,7 +405,7 @@ def accumulator_data():
         db.session.commit()
         flash('The file was successfully uploaded to the database', 'success')
         print('Added', 'success')
-    return redirect(url_for('main.accumulator'))
+    return redirect(url_for('main.accumulator', id=identity))
 
 # download .mat file of stats
 @bp.route('/export_mat', methods=['GET', "POST"])
