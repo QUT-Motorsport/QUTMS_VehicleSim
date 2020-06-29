@@ -73,7 +73,8 @@ class PlotMassSimulation:
     def plot(self):
         """Return a matplotlib plot
 
-        Primary view of all graphs
+        Primary view of all preliminary graphs
+        View curvature, speed, lat & long forces
         """
 
         fig,a =  plt.subplots(3,2)
@@ -117,6 +118,8 @@ class PlotMassSimulation:
         return fig
 
     def plot_html(self):
+        """Return a string wi
+        """
         return mpld3.fig_to_html(self.plot())
 
     def plot_gg(self):

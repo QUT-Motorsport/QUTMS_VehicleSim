@@ -15,15 +15,11 @@ class Track:
 
         # Read arrays into memory
         self.crv_np = self.track_data[str(self.struct)][self.crv_name][0][0][0]
+        self.crv = self.crv_np.tolist()
         self.x = self.track_data[str(self.struct)][self.x_name][0][0][0]
 
-        # Single values and crv
-        self.crv = []
-        self.max_abs_value = max(abs(x) for x in self.crv_np)
-        for num, data in enumerate(self.crv_np):
-            self.crv.append(data)  
-            if abs(data) == self.get_max_abs_value():
-                self.start_position = num
+        # Single values
+        self.start_position = numpy.argmax(abs(self.crv_np))
 
         # Format arrays with single values
         self.formatted_crv = numpy.append(self.get_crv_np()[self.get_start_position():self.get_array_length()], self.get_crv_np()[:self.get_end_position() + 1])
@@ -43,9 +39,6 @@ class Track:
 
     def get_x(self):
         return self.x
-
-    def get_max_abs_value(self):
-        return self.max_abs_value
 
     def get_start_position(self):
         return self.start_position
