@@ -71,7 +71,7 @@ class PlotMassSimulation:
         pickle.dump(pickle_stats, open("statistics.p", "wb"))
 
     def plot(self):
-        """Return a matplotlib plot
+        """Return a matplotlib figure
 
         Primary view of all preliminary graphs
         View curvature, speed, lat & long forces
@@ -118,28 +118,47 @@ class PlotMassSimulation:
         return fig
 
     def plot_html(self):
-        """Return a string wi
+        """Return a string
+
+        Generates an mpld3 plot in html tags to display
+        the primary plot within a template
         """
         return mpld3.fig_to_html(self.plot())
 
     def plot_gg(self):
+        """Return a matplotlib figure
+
+        Creates an instance of a GG Diagram, and generates
+        the required plot
+        """
         gg = GG_Diagram(self.window_w, self.window_h, self.a_lat, self.a_long)
         return gg.plot()
 
     def plot_gg_html(self):
+        """Return a string
+
+        Generates an mpld3 plot in html tags to display
+        the complete colour-coded GG Diagram
+        """
         return mpld3.fig_to_html(self.plot_gg())
 
     def plot_speed_curvature(self):
+        """Return a matplotlib plot
+
+        Creates an instance of an experimental Speed v Curvature Diagram, 
+        and generates the required plot
+        """
+
         # Plot figure and determine size
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
         graph_size = (((self.window_h - 500) * (12 - 7)) / (1080 - 500)) + 7
         fig.set_size_inches(graph_size, graph_size - 1)
 
-        # Title diagram and create legend
+        # Title diagram
         ax.set_title('Speed v Curvature')
         
-        # Colour the plots based on the position of the plots
+        # Populate data on the axis'
         ax.plot(self.track['x_array'], [abs(i * 100) for i in self.track['crv']], label='Absolute Curvature * 100')
         ax.plot(self.track['x_array'], self.velocity, label='Speed (m/s)')
         ax.legend()
@@ -148,7 +167,17 @@ class PlotMassSimulation:
         return fig
 
     def plot_speed_curvature_html(self):
+        """Return a string
+
+        Generates an mpld3 plot in html tags to display
+        the Speed v Curvature Diagram
+        """
         return mpld3.fig_to_html(self.plot_speed_curvature())
         
     def get_fastest_lap(self):
+        """Return a string
+
+        Generates a complete string with the simulated time taken to complete
+        a lap of the inputted data array
+        """
         return self.statistics.get_fastest_lap()

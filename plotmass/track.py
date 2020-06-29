@@ -8,15 +8,15 @@ from time import sleep
 class Track:
 
     def __init__(self, mat_file, crv_name, x_name):
-        self.track_data = loadmat(mat_file)
-        self.struct = list(dict.keys(self.track_data))[3]
-        self.crv_name = crv_name
-        self.x_name = x_name
+
+        # Read data from matlab file
+        track_data = loadmat(mat_file)
+        struct = list(dict.keys(track_data))[3]
 
         # Read arrays into memory
-        self.crv_np = self.track_data[str(self.struct)][self.crv_name][0][0][0]
+        self.crv_np = track_data[str(struct)][crv_name][0][0][0]
         self.crv = self.crv_np.tolist()
-        self.x = self.track_data[str(self.struct)][self.x_name][0][0][0]
+        self.x = track_data[str(struct)][x_name][0][0][0]
 
         # Single values
         self.start_position = np.argmax(abs(self.crv_np))
@@ -56,6 +56,11 @@ class Track:
         return self.offset
 
     def get_track(self):
+        """Returns a dictionary
+
+        Populates a dictionary with every input array for use in plots and by
+        external data sources
+        """
         track = {}
         track["offset"] = self.get_offset()
         track["crv_array"] = self.get_formatted_crv()
