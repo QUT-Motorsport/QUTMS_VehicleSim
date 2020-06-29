@@ -7,11 +7,12 @@ from flask_login import UserMixin
 class User(db.Model, UserMixin):
     __tablename__='user' # good practice to specify table name
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), index=True, unique=True, nullable=False)
+    email = db.Column(db.String(255), index=True, unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     def __repr__(self): #string print method
-        return "<name: {}, id: {}>".format(
-            self.name, self.id)
+        return "<email: {}, id: {}>".format(
+            self.email, self.id)
+
 class Lap(db.Model, UserMixin):
     __tablename__='lap' # good practice to specify table name
     id = db.Column(db.String, primary_key=True)

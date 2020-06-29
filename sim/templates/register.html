@@ -35,7 +35,7 @@
       <!-- Login Form -->
       <form action={{ url_for('auth.register') }} method="POST" role="form">
         {{ registerform.csrf_token }}
-        {{ registerform.username(placeholder="Username",class_='fadeIn second',type="text",id="username") }}
+        {{ registerform.email(placeholder="email",class_='fadeIn second',type="text",id="email") }}
         {{ registerform.password(placeholder="Password",class_='fadeIn third',type="password",id="password") }}
         {{ registerform.confirm(placeholder="Confirm Password",class_='fadeIn fourth',type="password",id="confirm") }}
 
@@ -47,7 +47,7 @@
       <div id="formFooter">
         <a style='padding-right:12%;'class="underlineHover" href="/login">Login</a>
         <a style='padding-right:6%;padding-left:6%;'class="underlineHover" href="/">Home</a>
-        <a style='padding-left:12%'class="underlineHover" href="#">Forgot Password?</a>
+        <a style='padding-left:12%'class="underlineHover" href="/forget">Forgot Password?</a>
       </div>
 
     </div>
