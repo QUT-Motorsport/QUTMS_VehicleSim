@@ -2,7 +2,7 @@ from scipy.io import loadmat
 from scipy.signal import find_peaks
 import pandas as pd
 from math import *
-import numpy
+import numpy as np
 from time import sleep
 
 class Track:
@@ -19,17 +19,17 @@ class Track:
         self.x = self.track_data[str(self.struct)][self.x_name][0][0][0]
 
         # Single values
-        self.start_position = numpy.argmax(abs(self.crv_np))
+        self.start_position = np.argmax(abs(self.crv_np))
+        self.end_position = self.start_position - 1
+        self.array_length = len(self.get_crv_np())
 
         # Format arrays with single values
-        self.formatted_crv = numpy.append(self.get_crv_np()[self.get_start_position():self.get_array_length()], self.get_crv_np()[:self.get_end_position() + 1])
+        self.formatted_crv = np.append(self.crv_np[self.start_position:self.array_length], self.crv_np[:self.end_position + 1])
         self.formatted_crv = abs(self.formatted_crv)
 
         # Assign single values that require formatted arrays
-        crv_array_offset = numpy.append(self.get_formatted_crv()[self.get_start_position():self.get_array_length()], self.get_formatted_crv()[0:self.get_end_position() + 1])
-        abs_ofsts = [abs(x) for x in crv_array_offset]
-        offset_position = abs_ofsts.index(max(abs_ofsts))
-        self.offset = offset_position - self.get_start_position()
+        crv_array_offset = np.append(self.formatted_crv[self.start_position:self.array_length], self.formatted_crv[0:self.end_position + 1])
+        self.offset = np.argmax(abs(crv_array_offset)) - self.start_position
 
     def get_crv(self):
         return self.crv
@@ -44,10 +44,10 @@ class Track:
         return self.start_position
 
     def get_end_position(self):
-        return self.get_start_position() - 1
+        return self.end_position
 
     def get_array_length(self):
-        return len(self.get_crv_np())
+        return self.array_length
 
     def get_formatted_crv(self):
         return self.formatted_crv

@@ -31,12 +31,13 @@ class LateralVelocity:
         top_speed = self.nthroot((2*P)/(p*Cd*A),3)
         lat_velocity = []
         for n in radius:
-            if 0.5*n*p*-Cl*A*mu > m:
+            weighted_load = 0.5*n*p*-Cl*A*mu
+            if weighted_load > m:
                 vel = top_speed
             else:
-                vel = sqrt((n*mu*m*g)/(m-0.5*n*p*-Cl*A*mu))
-                if vel>top_speed:
-                    vel=top_speed
+                vel = sqrt((n * mu * m * g) / (m - weighted_load))
+                if vel > top_speed:
+                    vel = top_speed
             lat_velocity.append(vel)
         return lat_velocity
 

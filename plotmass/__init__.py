@@ -4,9 +4,9 @@ from .lateral_velocity import LateralVelocity
 from .momentum import Momentum
 from .statistics import Statistics
 from .gg_diagram import GG_Diagram
-from .plotting import *
 
 import pickle
+import matplotlib.pyplot as plt, mpld3
 
 class PlotMassSimulation:
     """Implementation of a Plot Mass Lap Simulation

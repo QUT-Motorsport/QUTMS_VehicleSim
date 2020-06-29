@@ -1,7 +1,6 @@
 from .models import Lap, QCAR, Accumulator
 from .forms import dataForm, quarterCarForm, accumulatorForm
-from flask import Blueprint,render_template, redirect, url_for, request, flash, send_file
-# from flask_login import LoginManager,login_user,current_user,logout_user, login_required
+from flask import Blueprint, render_template, redirect, url_for, request, flash, send_file
 import datetime
 from . import db
 from werkzeug.utils import secure_filename
@@ -10,7 +9,6 @@ import os
 import sys
 from plotmass import PlotMassSimulation
 from pypresence import Presence
-import matplotlib.pyplot as plt
 from github import Github
 from dotenv import load_dotenv, find_dotenv
 from scipy.io import savemat
@@ -34,12 +32,15 @@ except:
 load_dotenv(find_dotenv())
 g = Github(os.getenv("GITHUB"))
 
+# Initalise blueprint
+bp = Blueprint('main', __name__)
+
+# Helper functions
 
 def check_upload_file(form):
     global mat_upload_number
     # get file data from form
     fp = form.mat.data
-    filename = fp.filename
     # get the current path of the module file... store file relative to this path
     BASE_PATH= os.path.dirname(__file__)
     
@@ -57,8 +58,6 @@ def fetch_mat_file(mat_name):
     BASE_PATH = os.path.dirname(__file__)
     matfile = os.path.join(BASE_PATH, 'static/mat', mat_name)
     return matfile
-
-bp = Blueprint('main', __name__)
 
 # Home page
 @bp.route('/')

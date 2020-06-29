@@ -195,11 +195,7 @@ class Momentum:
         return self.brake_a_lat
 
     def get_velocity(self):
-        velocity = []
-
-        for i in range(len(self.accel_velocity)):
-            velocity.append(minimum(self.accel_velocity[i], self.brake_velocity[i]))
-        return velocity
+        return [min(accel_vel, brake_vel) for accel_vel, brake_vel in zip(self.accel_velocity, self.brake_velocity)]
 
     def get_a_lat(self):
         a_lat = []
