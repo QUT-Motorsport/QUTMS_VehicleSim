@@ -69,7 +69,7 @@ Accumulator
 {% import "bootstrap/wtf.html" as wtf %}
 <div class="row">
   <div class="col">
-    <form action={{ url_for('main.accumulator_data', identity=id.id) }} method="post" class="form" role="form">
+    <form action={{ url_for('main.accumulator_data', identity=id.id, input_mass=car_mass) }} method="post" class="form" role="form">
       <div class="col form-wrapper">
             {{ dataform.csrf_token }}
         <div class="input-group mb-3">
@@ -88,13 +88,13 @@ Accumulator
                 <div class="input-group mb-3">
                     {{ dataform.regen(placeholder="Regen",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">0.%</span>
+                    <span class="input-group-text" id="basic-addon2">%</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
                     {{ dataform.efficiency(placeholder="Efficiency",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">0.%</span>
+                    <span class="input-group-text" id="basic-addon2">%</span>
                 </div>
                 </div>
             </div>
@@ -104,13 +104,13 @@ Accumulator
                 <div class="input-group mb-3">
                     {{ dataform.frontAxel(placeholder="Front Axel",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">%</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
                     {{ dataform.rearAxel(placeholder="Rear Axel",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">%</span>
                 </div>
                 </div>
                 <label for="basic-addon2" class="mb-2">Long. Dist. from F&R to CG</label>
@@ -121,13 +121,13 @@ Accumulator
                 <div class="input-group mb-3">
                     {{ dataform.airVelocity(placeholder="Air Velocity (Wind)",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">m/s</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
                     {{ dataform.gradient(placeholder="Gradient",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">°</span>
                 </div>
                 </div>
             </div>
@@ -137,37 +137,37 @@ Accumulator
                 <h4>Car Statistics</h4>
                 <hr>
                 <div class="input-group mb-3">
-                    {{ dataform.rollingResistanceCoefficient(placeholder="rollingResistanceCoefficient",class_='form-control') }}
+                    {{ dataform.rollingResistanceCoefficient(placeholder="Rolling Resistance Coefficient",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">Double</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
                     {{ dataform.wheelbase(placeholder="Wheelbase",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">m</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
                     {{ dataform.gearRatio(placeholder="Gear Ratio",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">Double</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
                     {{ dataform.wheelRadius(placeholder="Wheel Radius",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">m</span>
                 </div>
                 </div>
             </div>
             <div class="col">
-                <h4>Mass</h4>
+                <h4>Mass - {{ car_mass }}kg</h4>
                 <hr>
                 <div class="input-group mb-3">
                     {{ dataform.cellMass(placeholder="Cell Mass",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">g</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
@@ -177,15 +177,21 @@ Accumulator
                 </div>
                 </div>
                 <div class="input-group mb-3">
-                    {{ dataform.vehicleMass(placeholder="Vehicle Mass",class_='form-control') }}
+                    {{ dataform.driverMass(placeholder="Driver Mass",class_='form-control') }}
                 <div class="input-group-append">
                     <span class="input-group-text" id="basic-addon2">kg</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
-                    {{ dataform.driverMass(placeholder="Driver Mass",class_='form-control') }}
+                    {{ dataform.cellsPack(placeholder="Cells per Pack",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">int</span>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ dataform.packs(placeholder="Packs",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">int</span>
                 </div>
                 </div>
             </div>
