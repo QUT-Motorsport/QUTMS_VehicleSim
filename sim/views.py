@@ -135,11 +135,38 @@ def qcar(id, width=None, height=None):
 
     # Fetch QCAR instance by ID
     id = QCAR.query.filter_by(id=id).first()
-    example_html = "<p>Test this</p>" # DELETE LINE ONCE UNDERSTOOD
-    example_output = dummy_output(50)
+    qcar_m_s = id.sprungmass            # Sprung Mass           (kg)
+    qcar_m_u = id.unsprungmass          # Unsprung Mass         (kg)
+    qcar_s_l = id.linearspring          # Linear Spring Rate?   (N/m)
+    qcar_s_nl = id.nonlinearspring      # Non-Linear Spring?    (?)
+    qcar_d_c = id.damperscompression    # Dampering Ratio Comp? (ratio)
+    qcar_d_r = id.dampersrebound        # Dampers Rebound?      (?)
+    qcar_t_l = id.tireslinear           # Tires Linear?         (?)
+    qcar_t_nl = id.tiresnonlinear       # Tires Non-Linear?     (?)
+    qcar_t_L = id.tireslift             # Tires Lift?           (?)
+    qcar_b_l = id.bumplinear            # Bump Linear?          (?)
+    qcar_b_nl = id.bumpnonlinear        # Bump Non-Linear?      (?)
+    qcar_b_h = id.bumphysteresis        # Bump Hysteresis?      (?)
+
+    qcar_primitive = primitives(qcar_m_s, qcar_s_l, qcar_d_c)
+
+    headings = ["Sprung Mass Natural Frequency (Hz)",
+                "Sprung Mass Damped Frequency (Hz)",
+                "Unsprung Mass Natural Frequency",
+                "Unsprung Mass Damped Frequency",
+                "Eigen Values and Eigen Vectors of the Quarter Car"]
+
+    values = [qcar_primitive.get_sprung_mass_natural_frequency(),
+              qcar_primitive.get_sprung_mass_damped_frequency(),
+              qcar_primitive.get_unsprung_mass_natural_frequency(),
+              qcar_primitive.get_unsprung_mass_damped_frequency(),
+              qcar_primitive.get_eigen_values()]
+
+
+    data = load_template(headings, values)
 
     title = 'QUTMS | QCAR'
-    return render_template('qcar_output.html',title=title,id=id,name=id.name,output_html=example_output)
+    return render_template('qcar_output.html',title=title,id=id,name=id.name,output_html=data)
 
 
 # Analyse table for Editing entries in DB
