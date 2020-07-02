@@ -1,14 +1,27 @@
 class Constants:
 
-    def __init__(self, g, m, P, p, A, Cd, mu, Cl):
-        self.g = g
-        self.m = m
-        self.P = P
-        self.p = p
-        self.A = A
-        self.Cd = Cd
-        self.mu = mu
-        self.Cl = Cl
+    def __init__(self, g=0, m=0, P=0, p=0, A=0, Cd=0, mu=0, Cl=0, item=[]):
+
+        if item != []:
+            # If object passed as parameter, construct attributes
+            self.g = 9.81
+            self.m = item.mass
+            self.P = item.power
+            self.p = item.air_density
+            self.A = item.reference_area
+            self.Cd = item.coefficient_of_drag
+            self.mu = item.coefficient_of_friction
+            self.Cl = item.coefficient_of_lift
+        else:
+            # If parameters are manually inputted
+            self.g = g
+            self.m = m
+            self.P = P
+            self.p = p
+            self.A = A
+            self.Cd = Cd
+            self.mu = mu
+            self.Cl = Cl
 
     def get_g(self):
         return self.g

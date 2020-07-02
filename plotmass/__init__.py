@@ -14,7 +14,7 @@ class PlotMassSimulation:
     Calculates the velocity of a 1D object of mass around a track
     """
 
-    def __init__(self, mat_file, crv_name, window_w, window_h, m, P, p, A, Cd, mu, Cl, g=9.81):
+    def __init__(self, mat_file, crv_name, window_w, window_h, m=0, P=0, p=0, A=0, Cd=0, mu=0, Cl=0, g=9.81, constants=[]):
         """Constructs an instance of the Plot Mass model
 
         Populates velocity arrays from inputted data with mathematical models
@@ -25,7 +25,10 @@ class PlotMassSimulation:
         self.window_w = window_w
 
         # Populate constants
-        vehicle = Constants(g, m, P, p, A, Cd, mu, Cl)
+        if m == 0 and P == 0 and g == 9.81 and constants != []:
+            vehicle = Constants(item=constants)
+        else:
+            vehicle = Constants(g, m, P, p, A, Cd, mu, Cl)
 
         # Fetch track data from .mat file
         track = Track(mat_file, crv_name, 'x')

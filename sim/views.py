@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import sys
 from plotmass import PlotMassSimulation
+from quarterCarSimulation import QuarterCarSimulation
 from pypresence import Presence
 from github import Github
 from dotenv import load_dotenv, find_dotenv
@@ -123,18 +124,10 @@ def analysis_qcar():
 @bp.route('/qcar/<id>', defaults={'width': None, 'height': None})
 @bp.route('/qcar/<id>/<width>/<height>')
 def qcar(id, width=None, height=None):
+    """Returns template displaying Quarter Car Model
 
-    # Fetch Browser Height and Width
-    if not width or not height:
-        return """
-        <script>
-        (() => window.location.href = window.location.href +
-        ['', window.innerWidth, window.innerHeight].join('/'))()
-        </script>
-        """
+    Parameters of Quarter Car Model - Reference:
 
-    # Fetch QCAR instance by ID
-    id = QCAR.query.filter_by(id=id).first()
     qcar_m_s = id.sprungmass            # Sprung Mass           (kg)
     qcar_m_u = id.unsprungmass          # Unsprung Mass         (kg)
     qcar_s_l = id.linearspring          # Linear Spring Rate?   (N/m)
@@ -147,23 +140,25 @@ def qcar(id, width=None, height=None):
     qcar_b_l = id.bumplinear            # Bump Linear?          (?)
     qcar_b_nl = id.bumpnonlinear        # Bump Non-Linear?      (?)
     qcar_b_h = id.bumphysteresis        # Bump Hysteresis?      (?)
+    """
 
-    qcar_primitive = primitives(qcar_m_s, qcar_s_l, qcar_d_c)
+    # Fetch Browser Height and Width
+    if not width or not height:
+        return """
+        <script>
+        (() => window.location.href = window.location.href +
+        ['', window.innerWidth, window.innerHeight].join('/'))()
+        </script>
+        """
 
-    headings = ["Sprung Mass Natural Frequency (Hz)",
-                "Sprung Mass Damped Frequency (Hz)",
-                "Unsprung Mass Natural Frequency",
-                "Unsprung Mass Damped Frequency",
-                "Eigen Values and Eigen Vectors of the Quarter Car"]
+    # Fetch QCAR instance by ID
+    id = QCAR.query.filter_by(id=id).first()
 
-    values = [qcar_primitive.get_sprung_mass_natural_frequency(),
-              qcar_primitive.get_sprung_mass_damped_frequency(),
-              qcar_primitive.get_unsprung_mass_natural_frequency(),
-              qcar_primitive.get_unsprung_mass_damped_frequency(),
-              qcar_primitive.get_eigen_values()]
+    # Fetch Quarter Car Simulation instance - needs more parameters added (Look above)
+    simulation = QuarterCarSimulation(id.sprung_mass, id.unsprung_mass, )
 
-
-    data = load_template(headings, values)
+    # Load html template string from simulation instance
+    data = simulation.load_template('primitives')
 
     title = 'QUTMS | QCAR'
     return render_template('qcar_output.html',title=title,id=id,name=id.name,output_html=data)
@@ -220,7 +215,7 @@ def graph(id, width=None, height=None):
     matfile = fetch_mat_file(id.mat)
 
     # Initialise Simulation
-    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
+    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), constants=id)
 
     # Pickle graph & stats for download
     simulation.pickle(simulation.plot(), "graph_all.p")
@@ -255,8 +250,8 @@ def gg_diagram(id, width=None, height=None):
     matfile = fetch_mat_file(id.mat)
 
     # Initialise Simulation
-    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
-    
+    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), constants=id)
+
     # Pickle graph & stats for download
     simulation.pickle(simulation.plot_gg(), "graph_gg.p")
 
@@ -290,7 +285,7 @@ def speedcurvature(id, width=None, height=None):
     matfile = fetch_mat_file(id.mat)
 
     # Initialise Simulation
-    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), id.mass, id.power, id.air_density, id.reference_area, id.coefficient_of_drag, id.coefficient_of_friction, id.coefficient_of_lift)
+    simulation = PlotMassSimulation(matfile, id.curvature, int(width), int(height), constants=id)
     
     # Pickle graph & stats for download
     simulation.pickle(simulation.plot_speed_curvature(), "graph_curvature.p")
