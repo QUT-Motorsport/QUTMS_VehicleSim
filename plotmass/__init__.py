@@ -6,7 +6,10 @@ from .statistics import Statistics
 from .gg_diagram import GG_Diagram
 
 import pickle
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt, mpld3
+
 
 class PlotMassSimulation:
     """Implementation of a Plot Mass Lap Simulation

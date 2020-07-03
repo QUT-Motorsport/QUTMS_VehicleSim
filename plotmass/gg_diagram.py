@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt, mpld3
 import matplotlib.patches as patches
 import matplotlib.patches as mpatches
