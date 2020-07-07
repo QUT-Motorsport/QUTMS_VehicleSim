@@ -1,0 +1,94 @@
+<div class="accordion" id="accordianInputs">
+    <div class="card bg-secondary">
+      <div class="card-header bg-dark" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link text-light" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Inputs & Outputs
+          </button>
+        </h2>
+      </div>
+  
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordianInputs">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-8">
+                    <table class="table text-light">
+                        <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Input</th>
+                              <th scope="col">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for column, value in accum_spec.items() %}
+                        <tr>
+                            <th scope="row">{{column}}</th>
+                            <td>{{value}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6 col-md-4">
+                    <table class="table text-light">
+                        <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Mass</th>
+                              <th scope="col">Enduro Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for mass, simulation in lap_product.items() %}
+                        <tr>
+                            <th scope="row">{{mass}}</th>
+                            <td>{{simulation.get_endurance_time(FoS)}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div id="accordion">
+    {% if layouts is defined %}
+        {% for i in layouts %}
+            <div class="card">
+                <div class="card-header" id="heading{{i.get_bricks()}}bricks" style="background-color:{{i.get_bg_color()}};">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" style="color:{{i.get_fg_color()}};" data-toggle="collapse" data-target="#collapse{{i.get_bricks()}}bricks" aria-expanded="false" aria-controls="collapse{{i.get_bricks()}}bricks">
+                        {{i.get_bricks()}} Brick Configuration
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse{{i.get_bricks()}}bricks" class="collapse" aria-labelledby="heading{{i.get_bricks()}}bricks" data-parent="#accordion">
+                    <div class="card-body">
+                        {% if i.cells is defined %}
+                            {% for y in i.cells %}
+                            <div id="accordion-sub">
+                                <div class="card">
+                                    <div class="card-header" id="heading{{y.get_series_cells()}}cells" style="background-color:{{y.get_bg_color()}};">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed text-light" data-toggle="collapse" data-target="#collapse{{y.get_series_cells()}}cells" aria-expanded="false" aria-controls="collapse{{y.get_series_cells()}}cells">
+                                            {{y.get_series_cells()}} Cells in Series
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse{{y.get_series_cells()}}cells" class="collapse" aria-labelledby="heading{{y.get_series_cells()}}cells" data-parent="#accordion-sub">
+                                        <div class="card-body">
+                                            <h5>{{y.get_series_cells()}} Series</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

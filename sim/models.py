@@ -53,8 +53,7 @@ class Accumulator(db.Model):
     FoS = db.Column(db.Float)
     regen = db.Column(db.Float)
     cellMass = db.Column(db.Float)
-    cellsPack = db.Column(db.Integer)
-    packs = db.Column(db.Integer)
+    brickMass = db.Column(db.Float)
     accumBoxMass = db.Column(db.Float)
     vehicleMass = db.Column(db.Float) # Excludes Driver, Accumulator Box/Hardware and Cells
     driverMass = db.Column(db.Float)
@@ -68,9 +67,9 @@ class Accumulator(db.Model):
     efficiency = db.Column(db.Float)
     wheelRadius = db.Column(db.Float)
     def __repr__(self): #string print method
-        return "<id: {}, name: {}, FoS: {}, regen: {}, cellMass: {}, cellsPack: {}, packs: {}, accumBoxMass: {}, vehicleMass:{}, driverMass:{}, rollingResistanceCoefficient:{}, wheelbase: {}, gradient: {}, frontAxel: {}, rearAxel: {},bumphysteresis: {},>".format(
+        return "<id: {}, name: {}, FoS: {}, regen: {}, cellMass: {}, brickMass: {}, accumBoxMass: {}, vehicleMass:{}, driverMass:{}, rollingResistanceCoefficient:{}, wheelbase: {}, gradient: {}, frontAxel: {}, rearAxel: {},bumphysteresis: {},>".format(
                               self.id, self.name, self.FoS, 
-                              self.regen, self.cellMass, self.cellsPack, self.packs, self.accumBoxMass, 
+                              self.regen, self.cellMass, self.brickMass, self.accumBoxMass, 
                               self.vehicleMass, self.driverMass, self.rollingResistanceCoefficient, 
                               self.wheelbase,self.gradient,self.frontAxel,
                               self.rearAxel,self.airVelocity, self.gearRatio, self.efficiency, self.wheelRadius)

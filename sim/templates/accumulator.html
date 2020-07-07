@@ -50,7 +50,7 @@ Accumulator
               <td>{{item.vehicleMass}}</td>
               <td>{{item.driverMass}}</td>
               <td class="btn-view">
-                <a href = '/roadload/{{item.id}}'class="btn btn-secondary btn-lg btn-square btn-fill-y btn-fill-x">View</button>
+                <a href = '/roadload/{{item.id}}/{{id.id}}'class="btn btn-secondary btn-lg btn-square btn-fill-y btn-fill-x">View</button>
               </td>
               
             </tr>
@@ -82,7 +82,7 @@ Accumulator
                 <div class="input-group mb-3">
                     {{ dataform.FoS(placeholder="Factor of Safety",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">Double</span>
+                    <span class="input-group-text" id="basic-addon2">Float</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
@@ -113,7 +113,6 @@ Accumulator
                     <span class="input-group-text" id="basic-addon2">%</span>
                 </div>
                 </div>
-                <label for="basic-addon2" class="mb-2">Long. Dist. from F&R to CG</label>
             </div>
             <div class="col">
                 <h5>Parameters</h5>
@@ -133,34 +132,6 @@ Accumulator
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <h4>Car Statistics</h4>
-                <hr>
-                <div class="input-group mb-3">
-                    {{ dataform.rollingResistanceCoefficient(placeholder="Rolling Resistance Coefficient",class_='form-control') }}
-                <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">Double</span>
-                </div>
-                </div>
-                <div class="input-group mb-3">
-                    {{ dataform.wheelbase(placeholder="Wheelbase",class_='form-control') }}
-                <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">m</span>
-                </div>
-                </div>
-                <div class="input-group mb-3">
-                    {{ dataform.gearRatio(placeholder="Gear Ratio",class_='form-control') }}
-                <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">Double</span>
-                </div>
-                </div>
-                <div class="input-group mb-3">
-                    {{ dataform.wheelRadius(placeholder="Wheel Radius",class_='form-control') }}
-                <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">m</span>
-                </div>
-                </div>
-            </div>
             <div class="col">
                 <h4>Mass - {{ car_mass }}kg</h4>
                 <hr>
@@ -183,15 +154,43 @@ Accumulator
                 </div>
                 </div>
                 <div class="input-group mb-3">
-                    {{ dataform.cellsPack(placeholder="Cells per Pack",class_='form-control') }}
+                    {{ dataform.brickMass(placeholder="Brick Mass",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">int</span>
+                    <span class="input-group-text" id="basic-addon2">kg</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
-                    {{ dataform.packs(placeholder="Packs",class_='form-control') }}
+                    {{ dataform.vehicleMass(placeholder="Vehicle Mass",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">int</span>
+                    <span class="input-group-text" id="basic-addon2">kg</span>
+                </div>
+                </div>
+            </div>
+            <div class="col">
+                <h4>Car Statistics</h4>
+                <hr>
+                <div class="input-group mb-3">
+                    {{ dataform.rollingResistanceCoefficient(placeholder="Rolling Resistance Coefficient",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">Float</span>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ dataform.wheelbase(placeholder="Wheelbase",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">m</span>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ dataform.gearRatio(placeholder="Gear Ratio",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">Float</span>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ dataform.wheelRadius(placeholder="Wheel Radius",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">m</span>
                 </div>
                 </div>
             </div>
@@ -202,7 +201,7 @@ Accumulator
   </div>
   
   <div class="col-md-4 rear-car mb-3">
-    <img src="{{ url_for('static',filename='img/front_car_ev.jpg') }}" alt="">
+    <img src="{{ url_for('static',filename='img/motor.jpg') }}" alt="">
   </div>
 </div>
 {% endblock %}

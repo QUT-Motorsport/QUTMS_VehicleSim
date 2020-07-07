@@ -5,7 +5,7 @@ class Statistics:
     def __init__(self, velocity, dist):
 
         # Calculate time
-        lap_time = 0
+        self.lap_time = 0
         dist_travelled = []
         self.time = []
 
@@ -15,9 +15,9 @@ class Statistics:
             if i != 0:
                 dist_travelled[i] = dist[i] - dist[i - 1]
                 self.time[i] = dist_travelled[i]/velocity[i]
-            lap_time += self.time[i]
+            self.lap_time += self.time[i]
 
-        self.fastest_lap = str(timedelta(seconds=round(lap_time, 2)))[:-4]
+        self.fastest_lap = str(timedelta(seconds=round(self.lap_time, 2)))[:-4]
 
         # Calculate max and min speeds in km/h
         self.max_speed = round(max(velocity) * 3.6, 2)
@@ -31,6 +31,9 @@ class Statistics:
 
     def get_fastest_lap(self):
         return self.fastest_lap
+
+    def get_lap_time(self):
+        return self.lap_time
 
     def get_max_speed(self):
         return self.max_speed

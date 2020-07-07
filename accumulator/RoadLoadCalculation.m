@@ -1,6 +1,6 @@
 clear all; close all; clc;
 %% ************************ QEV 1 PARAMETERS ******************************
-% meq = equivalent mass, car + driver
+% meq = equivalentMass
 
 % mv = vehicle mass(kg)
 % Ro = rolling resistance coefficient
@@ -24,10 +24,13 @@ clear all; close all; clc;
 
 FoS = 1.05;
 regen = 0.1;
+
+totalMass = 380; % kg
 cellWeight = 76; % g
-cellsPack = 60;
-packs = 12;
+cellsPack = 60; % int
+packs = 12; % int
 cellWeight = (cellWeight * cellsPack * packs) / 1000; % kg
+driverWeight = 70; % kg
 
 % 5.91kWh (6.47kWh actual) convergence at 59.28 kg 5% FOS 50% regen
 
@@ -36,11 +39,11 @@ cellWeight = (cellWeight * cellsPack * packs) / 1000; % kg
 % 5.95kWh (6.68kWh actual) convergence at 61.56 kg 10% FOS 50% regen ******
 % 10.10kWh (10.69kWh actual) convergence at 98.50 kg 5% FOS 0% regen
 % 7.45kWh (8.02kWh actual) convergence at 73.87 kg 5% FOS 30% regen
-% current weight 80kg
 
-accumBox = 30; % kg, accumulator box and hardware weight
-mv = 380 - cellWeight - accumBox; % kg, base weight of QEV1 not including battery weight 140 kg
-meq = mv - 70; %kg, assuming 70kg for a driver
+accumBox = 30; % kg, accumulator casing and hardware weight
+vehicleMass = totalMass - driverWeight - cellWeight;
+mv = vehicleMass + cellWeight; % kg, base weight of car not including driver
+meq = totalMass; %kg equivalentMass
 
 Ro = 0.02; % found on https://hpwizard.com/tire-friction-coefficient.html, formula tires, had the same coefficient of friction so assumed correct/reasonable estimation
 L = 1.530; % m, wheel base
