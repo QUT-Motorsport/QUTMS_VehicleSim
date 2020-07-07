@@ -8,11 +8,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import sys
 from plotmass import PlotMassSimulation
+from roadload import Roadload
 from pypresence import Presence
 from github import Github
 from dotenv import load_dotenv, find_dotenv
 from scipy.io import savemat
 import pickle
+import time
 
 # globals
 window_w = window_h = 0
@@ -58,6 +60,18 @@ def fetch_mat_file(mat_name):
     BASE_PATH = os.path.dirname(__file__)
     matfile = os.path.join(BASE_PATH, 'static/mat', mat_name)
     return matfile
+
+def base10_round(x, base=5):
+    return base * round(x/base)
+
+# Generate values from 150% car weight to 50% car weight
+def stepped_values(max_value, step=5):
+    values = []
+    i = base10_round(max_value * 1.5, step)
+    while i > max_value / 2:
+        values.append(i)
+        i -= step
+    return values
 
 # Home page
 @bp.route('/')
@@ -301,7 +315,7 @@ def speedcurvature(id, width=None, height=None):
 
     return render_template('speedcurvature.html', graph_html=simulation.plot_speed_curvature_html(), title=title, name=id.name, fastest_lap=simulation.get_fastest_lap()[2:], id=id)
 
-# Standard Graph for Accumulator modelling
+# Standard Input page for Roadload Modelling
 @bp.route('/accumulator/<id>', defaults={'width': None, 'height': None})
 @bp.route('/accumulator/<id>/<width>/<height>')
 def accumulator(id, width=None, height=None):
@@ -313,15 +327,58 @@ def accumulator(id, width=None, height=None):
         </script>
         """
 
+    # Fetch lap simulation inputs from database
     id = Lap.query.filter_by(id=id).first()
+
+    # Update page title
     title = 'QUTMS | Accumulator'
-    dataform = accumulatorForm()
 
-    data = Accumulator.query.order_by(Accumulator.id.desc()).all()
+    # Fetch pre-existing roadload inputs in database
+    roadload_inputs = Accumulator.query.order_by(Accumulator.id.desc()).all()
 
+    # Update discord rich presence
     if rpc_activated:
         RPC.update(state= "A Chunky Accumulator", details='Modelling', large_image="qut-logo")
-    return render_template('accumulator.html', name=id.name, id=id, title=title, dataform=dataform, data=data)
+
+    return render_template('accumulator.html', name=id.name, id=id, title=title, car_mass=int(id.mass), data=roadload_inputs, dataform=accumulatorForm())
+
+# Graph roadload model
+@bp.route('/roadload/<roadload_id>/<lap_id>', defaults={'width': None, 'height': None})
+@bp.route('/roadload/<roadload_id>/<lap_id>/<width>/<height>')
+def roadload(roadload_id, lap_id, width=None, height=None):
+    if not width or not height:
+        return """
+        <script>
+        (() => window.location.href = window.location.href +
+        ['', window.innerWidth, window.innerHeight].join('/'))()
+        </script>
+        """
+
+    # Fetch roadload simulation inputs from database
+    accumulator_spec = Accumulator.query.filter_by(id=roadload_id).first()
+
+    # Fetch lap simulation inputs from database
+    lap_spec = Lap.query.filter_by(id=lap_id).first()
+
+    # Update page title
+    title = 'QUTMS | Roadload'
+
+    # Fetch mat file for simulation input
+    matfile = fetch_mat_file(lap_spec.mat)
+
+    # Initialise Lap Simulation
+    lap_simulation = PlotMassSimulation(matfile, lap_spec.curvature, int(width), int(height), lap_spec.mass, lap_spec.power, lap_spec.air_density, lap_spec.reference_area, lap_spec.coefficient_of_drag, lap_spec.coefficient_of_friction, lap_spec.coefficient_of_lift)
+
+    # Iterate through lap simulations
+    steps = stepped_values(lap_spec.mass)
+    lap_product = {}
+    for i in steps:
+        lap_product[i] = PlotMassSimulation(matfile, lap_spec.curvature, int(width), int(height), i, lap_spec.power, lap_spec.air_density, lap_spec.reference_area, lap_spec.coefficient_of_drag, lap_spec.coefficient_of_friction, lap_spec.coefficient_of_lift)
+
+    # Initialise Roadload Simulation
+    roadload_simulation = Roadload(accumulator_spec, lap_product)
+
+    return render_template('roadload.html', title=title, lap_spec=lap_spec, accumulator_spec=accumulator_spec, lap_sim=lap_simulation, graph_html=roadload_simulation.plot())
 
 
 # Delete Lap Entry
@@ -404,27 +461,28 @@ def qcar_data():
     return redirect(url_for('main.qcar_upload'))
 
 # Upload data for Quarter Car
-@bp.route('/upload/accumulator/<identity>', methods=['GET','POST'])
-def accumulator_data(identity):
+@bp.route('/upload/accumulator/<identity>/<input_mass>', methods=['GET','POST'])
+def accumulator_data(identity, input_mass):
     dataform = accumulatorForm()
     if dataform.validate_on_submit():
         newitem = Accumulator(id = datetime.datetime.now(),
-                    name=dataform.name.data,
+                    name = dataform.name.data,
                     FoS = dataform.FoS.data,
-                    regen = dataform.regen.data,
+                    regen = float(dataform.regen.data) / 100,
                     cellMass = dataform.cellMass.data,
+                    brickMass = dataform.brickMass.data,
                     accumBoxMass = dataform.accumBoxMass.data,
                     vehicleMass = dataform.vehicleMass.data,
                     driverMass = dataform.driverMass.data,
                     rollingResistanceCoefficient = dataform.rollingResistanceCoefficient.data,
                     wheelbase = dataform.wheelbase.data,
                     gradient = dataform.gradient.data,
-                    frontAxel = dataform.frontAxel.data,
-                    rearAxel = dataform.rearAxel.data,
+                    frontAxel = (float(dataform.frontAxel.data) / 100) * dataform.wheelbase.data,
+                    rearAxel = (float(dataform.rearAxel.data) / 100) * dataform.wheelbase.data,
                     airVelocity = dataform.airVelocity.data,
-                    gearRatio = dataform.rearAxel.data,
-                    efficiency = dataform.rearAxel.data,
-                    wheelRadius = dataform.rearAxel.data
+                    gearRatio = dataform.gearRatio.data,
+                    efficiency = float(dataform.efficiency.data) / 100,
+                    wheelRadius = dataform.wheelRadius.data
                     )
         #add the object to the db session
         db.session.add(newitem)

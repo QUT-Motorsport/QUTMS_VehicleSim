@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+Roadload
+{% endblock %}
+
+{% block header %}
+{{lap_spec.name}} / {{accumulator_spec.name}} / {{lap_sim.get_endurance_laps()}} Laps
+
+<div class="btn-group d-flex mt-2" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary" onclick="window.location.href = '/graph/{{lap_spec.id}}';">View All</button>
+    <button type="button" class="btn btn-secondary" onclick="window.location.href = '/gg/{{lap_spec.id}}';">GG Diagram</button>
+    <button type="button" class="btn btn-secondary" onclick="window.location.href = '/speedcurvature/{{lap_spec.id}}';">Speed v Curvature</button>
+    <button type="button" class="btn btn-secondary" onclick="window.location.href = '/accumulator/{{lap_spec.id}}';">Accumulator</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="mb-5">
+{{graph_html|safe}}
+</div>
+{% endblock %}

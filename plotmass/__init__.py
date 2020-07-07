@@ -7,6 +7,8 @@ from .gg_diagram import GG_Diagram
 
 import pickle
 import matplotlib.pyplot as plt, mpld3
+from datetime import timedelta
+from numpy import ceil
 
 class PlotMassSimulation:
     """Implementation of a Plot Mass Lap Simulation
@@ -181,3 +183,15 @@ class PlotMassSimulation:
         a lap of the inputted data array
         """
         return self.statistics.get_fastest_lap()
+
+    def get_distance(self):
+        return self.track['x_array'][len(self.track['x_array'])-1]
+
+    def get_endurance_laps(self, stint_distance=11, stints=2):
+        lap_distance = self.get_distance() / 1000 # Km
+
+        return int((ceil(stint_distance/lap_distance)) * stints)
+
+    def get_endurance_time(self, FoS):
+        enduro_time = self.statistics.get_lap_time() * self.get_endurance_laps() * FoS
+        return str(timedelta(seconds=round(enduro_time, 2)))
