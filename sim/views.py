@@ -56,15 +56,16 @@ def check_upload_file(form):
     return db_upload_path
 
 def drop_zero_decimal(data):
-    '''
-    Function that drops the decimal if the data value is equal to an integer.
+    """Returns a list
+    
+    Function that drops the decimal if the data value is equal to an integer (decimal place value of 0).
 
     Input:
     data - List of models
 
     Output:
     new_data - Modified list of models
-    '''
+    """
     
     new_data = []
 
@@ -136,6 +137,7 @@ def upload():
 @bp.route('/analysis/lap')
 def analysis_lap():
     data = Lap.query.order_by(Lap.id.desc()).all()
+    data = drop_zero_decimal(data)
     title = 'QUTMS | Analysis'
     if rpc_activated:
         RPC.update(state="Point Mass Lap Simulations", details="Analyzing...", large_image="qut-logo")
@@ -344,6 +346,7 @@ def accumulator(id, width=None, height=None):
     dataform = accumulatorForm()
 
     data = Accumulator.query.order_by(Accumulator.id.desc()).all()
+    data = drop_zero_decimal(data)
 
     if rpc_activated:
         RPC.update(state= "A Chunky Accumulator", details='Modelling', large_image="qut-logo")
