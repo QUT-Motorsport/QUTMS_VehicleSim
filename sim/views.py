@@ -55,6 +55,36 @@ def check_upload_file(form):
     fp.save(upload_path)
     return db_upload_path
 
+def drop_zero_decimal(data):
+    '''
+    Function that drops the decimal if the data value is equal to an integer.
+
+    Input:
+    data - List of models
+
+    Output:
+    new_data - Modified list of models
+    '''
+    
+    new_data = []
+
+    for row in data:
+        new_row = {}
+        dict_row = row.__dict__
+        for key, value in dict_row.items():
+            try:
+                int_value = int(value)
+                if (value == int_value):
+                    new_row[key] = int_value
+                else:
+                    new_row[key] = value
+            except Exception:
+                new_row[key] = value
+        
+        new_data.append(new_row)
+    
+    return new_data
+
 def fetch_mat_file(mat_name):
     BASE_PATH = os.path.dirname(__file__)
     matfile = os.path.join(BASE_PATH, 'static/mat', mat_name)
@@ -115,6 +145,7 @@ def analysis_lap():
 @bp.route('/analysis/qcar')
 def analysis_qcar():
     data = QCAR.query.order_by(QCAR.id.desc()).all()
+    data = drop_zero_decimal(data)
     title = 'QUTMS | Analysis'
     if rpc_activated:
         RPC.update(state="Quarter Car", details="Analyzing...", large_image="qut-logo")
