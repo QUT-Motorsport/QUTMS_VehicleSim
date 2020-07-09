@@ -28,7 +28,7 @@ class Primitives:
         
         Calculates Sprung Mass Natural Frequency
 
-        Resources (APA Referenced):
+        Resources (APA Referenced, Not all used for final calculation):
         * Alvarez-Sánchez, E. (2013). A quarter-car suspension system: car body mass estimator and sliding mode control
           [Doctoral dissertation, Faculty of Electrical Mechanical Engineering, Veracruzana College, Zona University].
           Core. https://core.ac.uk/download/pdf/82554529.pdf
@@ -85,6 +85,45 @@ class Primitives:
         return round(self.get_unsprung_mass_natural_frequency() * sqrt(1 - (self.damping_ratio_compression**2)), self.rounding)
 
     def get_eigen_values(self):
+        """
+        Plan: Return a list with all of the eigen values contained within.
+
+        Resources:
+        Google Search: "eigenvalues an eigenvectors of natural frequency"
+        https://lpsa.swarthmore.edu/MtrxVibe/EigApp/EigVib.html
+        http://www2.me.rochester.edu/courses/ME443/NASTRAN/Chpt3RealEigenvalueAnalysis.pdf
+        https://encyclopediaofmath.org/wiki/Natural_frequencies
+        https://www.researchgate.net/post/Why_the_calculation_of_natural_frequencyeigenvalue_by_FEMfinite_element_method_do_not_converged_while_the_elements_growth
+        https://www.researchgate.net/post/How_can_we_find_the_eigenvectors_and_eigenvalues_when_have_unknow_values_in_damping_matrix
+        https://pdfs.semanticscholar.org/aee7/3d8ed1833deeaf83db335f067878448bd43f.pdf
+
+        Google Search: "eigenvalues an eigenvectors of qcar natural frequency"
+        https://www.mathworks.com/matlabcentral/answers/334812-eigenvalues-and-eigenvectors-how-do-i-work-out-which-eigenvalue-corresponds-to-which-eigenvector
+        https://www.researchgate.net/publication/322020905_PARAMETRIC_ANALYSIS_OF_A_QUARTER_CAR_VEHICLE_MODEL
+        https://engineering.purdue.edu/~deadams/ME563/HW5_10_solns.pdf
+        https://books.google.com.au/books?id=36kg2DJiy7cC&pg=PA195&lpg=PA195&dq=eigenvalues+and+eigenvectors+of+a+car+natural+frequency&source=bl&ots=JYgFDBI4gn&sig=ACfU3U30ZAWNtexfqMxLSwAV_DKWvZC1gA&hl=en&sa=X&ved=2ahUKEwiexPfMhr_qAhV6wzgGHemGAVs4ChDoATACegQIBxAB#v=onepage&q=eigenvalues%20and%20eigenvectors%20of%20a%20car%20natural%20frequency&f=false
+        https://knowledge.autodesk.com/search-result/caas/CloudHelp/cloudhelp/2017/ENU/NINCAD-SelfTraining/files/GUID-978425AB-D2FA-491B-8D39-BD1A757F3BBD-htm.html
+        https://docs.plm.automation.siemens.com/data_services/resources/nxnastran/12/help/tdoc/en_US/pdf/basic_dynamics.pdf
+
+        Google Search: "natural frequency from eigenvalues"
+        https://ocw.mit.edu/courses/mechanical-engineematlabring/2-004-systems-modeling-and-control-ii-fall-2007/assignments/sol09.pdf
+
+        Google Search: "natural frequency from eigenvalues qcar"
+        http://downloads.hindawi.com/archive/2012/863061.pdf
+        https://ep.liu.se/ecp/076/071/ecp12076071.pdf
+
+        Google Search: "stiffness matrix qcar"
+        http://people.duke.edu/~hpgavin/cee421/matrix.pdf
+        https://www.researchgate.net/post/What_are_the_typical_stiffness_values_while_designing_car_chassis
+
+        Google Search: "mass matrix qcar"
+        https://en.wikipedia.org/wiki/Mass_matrix
+        http://kis.tu.kielce.pl/mo/COLORADO_FEM/colorado/IFEM.Ch31.pdf
+        http://faculty.washington.edu/averess/ME478/dynamics.pdf
+        http://people.duke.edu/~hpgavin/cee541/StructuralElements.pdf
+
+        need to do more research on stiffness matrix and mass matrix
+        """
         return 5
 
     # Display format methods
