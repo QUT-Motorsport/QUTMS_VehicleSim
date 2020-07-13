@@ -16,6 +16,13 @@ Accumulator
 {% endblock %}
 
 {% block content %}
+
+<script>
+$(document).ready(function(){
+  $('input').tooltip();
+});
+</script>
+
 {% if data != [] %}
 <div class="card mb-5">
     <div class="card-header">
@@ -77,6 +84,34 @@ Accumulator
         </div>
         <div class="row">
             <div class="col">
+                <h5>Parameters</h5>
+                <hr>
+                <div class="input-group mb-3">
+                    {{ dataform.frontAxel(placeholder="Front Axel",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">%</span>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ dataform.rearAxel(placeholder="Rear Axel",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">%</span>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ dataform.airVelocity(placeholder="Air Velocity (Wind)",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">m/s</span>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ dataform.gradient(placeholder="Gradient",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">°</span>
+                </div>
+                </div>
+            </div>
+            <div class="col">
                 <h5>Elec. Calcs</h5>
                 <hr>
                 <div class="input-group mb-3">
@@ -97,36 +132,32 @@ Accumulator
                     <span class="input-group-text" id="basic-addon2">%</span>
                 </div>
                 </div>
-            </div>
-            <div class="col">
-                <h5>Offset Axles</h5>
-                <hr>
                 <div class="input-group mb-3">
-                    {{ dataform.frontAxel(placeholder="Front Axel",class_='form-control') }}
+                    {{ dataform.nominalVoltage(placeholder="Max Nominal Voltage",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                </div>
-                </div>
-                <div class="input-group mb-3">
-                    {{ dataform.rearAxel(placeholder="Rear Axel",class_='form-control') }}
-                <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">%</span>
+                    <span class="input-group-text" id="basic-addon2">V</span>
                 </div>
                 </div>
             </div>
             <div class="col">
-                <h5>Parameters</h5>
+                <h5>Cells</h5>
                 <hr>
                 <div class="input-group mb-3">
-                    {{ dataform.airVelocity(placeholder="Air Velocity (Wind)",class_='form-control') }}
+                    {{ dataform.cellNominalVoltage(placeholder="Cell Max/Charge Voltage",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">m/s</span>
+                    <span class="input-group-text" id="basic-addon2">V</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">
-                    {{ dataform.gradient(placeholder="Gradient",class_='form-control') }}
+                    {{ dataform.cellCapacity(placeholder="Cell Capacity",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">°</span>
+                    <span class="input-group-text" id="basic-addon2">Ah</span>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ dataform.cellMass(placeholder="Cell Mass",class_='form-control') }}
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">g</span>
                 </div>
                 </div>
             </div>
@@ -135,12 +166,6 @@ Accumulator
             <div class="col">
                 <h4>Mass - {{ car_mass }}kg</h4>
                 <hr>
-                <div class="input-group mb-3">
-                    {{ dataform.cellMass(placeholder="Cell Mass",class_='form-control') }}
-                <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">g</span>
-                </div>
-                </div>
                 <div class="input-group mb-3">
                     {{ dataform.accumBoxMass(placeholder="Accum. Box Mass",class_='form-control') }}
                 <div class="input-group-append">
@@ -154,9 +179,9 @@ Accumulator
                 </div>
                 </div>
                 <div class="input-group mb-3">
-                    {{ dataform.brickMass(placeholder="Brick Mass",class_='form-control') }}
+                    {{ dataform.cellCoverMass(placeholder="Cover Mass per Cell",class_='form-control') }}
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">kg</span>
+                    <span class="input-group-text" id="basic-addon2">g</span>
                 </div>
                 </div>
                 <div class="input-group mb-3">

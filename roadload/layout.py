@@ -7,10 +7,11 @@ class Layout:
     Virtual representation of a brick
     """
 
-    def __init__(self, num_bricks):
+    def __init__(self, num_bricks, configuration):
 
         # Set class attributes
         self.num = num_bricks
+        self.configuration = configuration
 
         # Set background colour
         r = lambda: random.randint(0,255)
@@ -27,19 +28,35 @@ class Layout:
     def set_bricks(self, num):
         self.num = num
 
+    def get_bricks_series(self):
+        return self.configuration['Series']
+
+    def get_bricks_parallel(self):
+        return self.configuration['Parallel']
+
     def get_bg_color(self):
         return self.bg_hex
 
     def get_fg_color(self):
         return self.fg_hex
 
-    def set_cells(self, min_cells, max_cells):
+    def set_cells(self, cells):
+        self.cells = cells
+
+    def generate_cells(self, min_cells, max_cells):
         self.cells = []
         for i in list(range(min_cells, max_cells + 1)):
-            self.cells.append(Cells(i))
+            for y in list(range(1, max_cells + 1)):
+                self.cells.append(Cells(i, y))
 
     def get_cells(self):
         return self.cells
+
+    def set_invalid_cells(self, invalid_cells):
+        self.invalid_cells = invalid_cells
+
+    def get_invalid_cells(self):
+        return self.invalid_cells
 
     def hex_to_rgb(self, hex):
         hex = hex.lstrip('#')
