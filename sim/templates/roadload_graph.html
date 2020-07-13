@@ -57,29 +57,90 @@
     {% if layouts is defined %}
         {% for i in layouts %}
             <div class="card">
-                <div class="card-header" id="heading{{i.get_bricks()}}bricks" style="background-color:{{i.get_bg_color()}};">
+                <div class="card-header" id="heading{{i.get_bricks()}}{{i.get_bricks_series()}}bricks" style="background-color:{{i.get_bg_color()}};">
                     <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" style="color:{{i.get_fg_color()}};" data-toggle="collapse" data-target="#collapse{{i.get_bricks()}}bricks" aria-expanded="false" aria-controls="collapse{{i.get_bricks()}}bricks">
-                        {{i.get_bricks()}} Brick Configuration
+                        <button class="btn btn-link collapsed" style="color:{{i.get_fg_color()}};" data-toggle="collapse" data-target="#collapse{{i.get_bricks()}}{{i.get_bricks_series()}}bricks" aria-expanded="false" aria-controls="collapse{{i.get_bricks()}}{{i.get_bricks_series()}}bricks">
+                        {{i.get_bricks()}} Brick Configuration - {{i.get_bricks_series()}} Series - {{i.get_bricks_parallel()}} Parallel
                         </button>
                     </h5>
                 </div>
-                <div id="collapse{{i.get_bricks()}}bricks" class="collapse" aria-labelledby="heading{{i.get_bricks()}}bricks" data-parent="#accordion">
+                <div id="collapse{{i.get_bricks()}}{{i.get_bricks_series()}}bricks" class="collapse" aria-labelledby="heading{{i.get_bricks()}}{{i.get_bricks_series()}}bricks" data-parent="#accordion">
                     <div class="card-body">
-                        {% if i.cells is defined %}
+
+                        <!-- Errors -->
+                        <div id="accordion-sub">
+                            <div class="card">
+                                <div class="card-header bg-danger" id="heading{{i.get_bricks()}}-error-cells">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed text-light" data-toggle="collapse" data-target="#collapse{{i.get_bricks()}}-error-cells" aria-expanded="false" aria-controls="collapse{{i.get_bricks()}}-error-cells">
+                                        Errors
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapse{{i.get_bricks()}}-error-cells" class="collapse" aria-labelledby="heading{{i.get_bricks()}}-error-cells" data-parent="#accordion-sub">
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                              <tr>
+                                                <th scope="col">Cells</th>
+                                                <th scope="col">Series</th>
+                                                <th scope="col">Parallel</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col">Mass</th>
+                                                <th scope="col">Reason</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if i.get_invalid_cells() != [] %}
+                                                    {% for y in i.invalid_cells %}
+                                                    <tr>
+                                                        <th scope="row">{{y.get_cells_total()}}</th>
+                                                        <td>{{y.get_cells_series()}}</td>
+                                                        <td>{{y.get_cells_parallel()}}</td>
+                                                        <td>{{y.get_cells_total() * i.get_bricks()}}</td>
+                                                        <td>{{y.get_car_mass()}}</td>
+                                                        <td>{{y.get_rule_issue()}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </tbody>
+                                          </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Compatible -->
+                        {% if i.get_cells() != [] %}
                             {% for y in i.cells %}
                             <div id="accordion-sub">
                                 <div class="card">
-                                    <div class="card-header" id="heading{{y.get_series_cells()}}cells" style="background-color:{{y.get_bg_color()}};">
+                                    <div class="card-header" id="heading{{y.get_cells_total() * i.get_bricks()}}cells" style="background-color:{{y.get_bg_color()}};">
                                         <h5 class="mb-0">
-                                            <button class="btn btn-link collapsed text-light" data-toggle="collapse" data-target="#collapse{{y.get_series_cells()}}cells" aria-expanded="false" aria-controls="collapse{{y.get_series_cells()}}cells">
-                                            {{y.get_series_cells()}} Cells in Series
+                                            <button class="btn btn-link collapsed text-light" data-toggle="collapse" data-target="#collapse{{y.get_cells_total() * i.get_bricks()}}cells" aria-expanded="false" aria-controls="collapse{{y.get_cells_total() * i.get_bricks()}}cells">
+                                            <h6 class="text-left">{{y.get_cells_total()}} Cells</h6>
+                                            <h6 class="text-left">{{y.get_cells_series()}} Series</h6>
+                                            <h6 class="text-left">{{y.get_cells_parallel()}} Parallel</h6>
                                             </button>
                                         </h5>
                                     </div>
-                                    <div id="collapse{{y.get_series_cells()}}cells" class="collapse" aria-labelledby="heading{{y.get_series_cells()}}cells" data-parent="#accordion-sub">
+                                    <div id="collapse{{y.get_cells_total() * i.get_bricks()}}cells" class="collapse" aria-labelledby="heading{{y.get_cells_total() * i.get_bricks()}}cells" data-parent="#accordion-sub">
                                         <div class="card-body">
-                                            <h5>{{y.get_series_cells()}} Series</h5>
+                                            <button type="button" class="btn btn-primary">
+                                                Car Mass <span class="badge badge-light">{{y.get_car_mass()}}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary">
+                                                Accumulator Mass <span class="badge badge-light">{{ y.get_accumulator_mass() }}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary">
+                                                Brick Mass <span class="badge badge-light">{{ y.get_brick_mass() }}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary">
+                                                Total Cells <span class="badge badge-light">{{y.get_cells_total() * i.get_bricks()}}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary">
+                                                Endurance Time <span class="badge badge-light">{{ y.get_lap_simulation().get_endurance_time(FoS) }}</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

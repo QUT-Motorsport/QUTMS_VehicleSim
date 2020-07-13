@@ -7,15 +7,23 @@ class Roadload:
     Calculates various accumulator layouts based off a lap simulation
     """
 
-    def __init__(self, constants, simulation_iterations, min_bricks=6, max_bricks=20, min_cells=8, max_cells=15):
+    def __init__(self, constants, min_bricks=6, max_bricks=20, min_cells=8, max_cells=15):
 
         # Assign parameters to class attributes
         self.constants = constants.__dict__
-        self.simulation_iterations = simulation_iterations
 
         # Generate list parameters to iterate through
-        accumulator = Accumulator(min_bricks, max_bricks, min_cells, max_cells)
-        self.layouts = accumulator.get_brick_layouts()
+        self.accumulator = Accumulator(min_bricks, max_bricks, min_cells, max_cells, self.constants)
+        self.layouts = self.accumulator.get_brick_layouts()
+
+    def set_simulation_iterations(self, simulation_iterations):
+        self.accumulator.set_simulation_iterations(simulation_iterations)
+        
+    def get_simulation_iterations(self):
+        return self.accumulator.get_simulation_iterations()
+
+    def set_roadload_calcs(self):
+        self.accumulator.set_roadload_calcs()
 
     def plot(self):
-        return render_template('roadload_graph.html', layouts=self.layouts, accum_spec=self.constants, lap_product=self.simulation_iterations, FoS=self.constants['FoS'])
+        return render_template('roadload_graph.html', layouts=self.layouts, accum_spec=self.constants, lap_product=self.get_simulation_iterations(), FoS=self.constants['FoS'])

@@ -376,7 +376,9 @@ def roadload(roadload_id, lap_id, width=None, height=None):
         lap_product[i] = PlotMassSimulation(matfile, lap_spec.curvature, int(width), int(height), i, lap_spec.power, lap_spec.air_density, lap_spec.reference_area, lap_spec.coefficient_of_drag, lap_spec.coefficient_of_friction, lap_spec.coefficient_of_lift)
 
     # Initialise Roadload Simulation
-    roadload_simulation = Roadload(accumulator_spec, lap_product)
+    roadload_simulation = Roadload(accumulator_spec)
+    roadload_simulation.set_simulation_iterations(lap_product)
+    roadload_simulation.set_roadload_calcs()
 
     return render_template('roadload.html', title=title, lap_spec=lap_spec, accumulator_spec=accumulator_spec, lap_sim=lap_simulation, graph_html=roadload_simulation.plot())
 
@@ -470,7 +472,7 @@ def accumulator_data(identity, input_mass):
                     FoS = dataform.FoS.data,
                     regen = float(dataform.regen.data) / 100,
                     cellMass = dataform.cellMass.data,
-                    brickMass = dataform.brickMass.data,
+                    cellCoverMass = dataform.cellCoverMass.data,
                     accumBoxMass = dataform.accumBoxMass.data,
                     vehicleMass = dataform.vehicleMass.data,
                     driverMass = dataform.driverMass.data,
@@ -482,7 +484,10 @@ def accumulator_data(identity, input_mass):
                     airVelocity = dataform.airVelocity.data,
                     gearRatio = dataform.gearRatio.data,
                     efficiency = float(dataform.efficiency.data) / 100,
-                    wheelRadius = dataform.wheelRadius.data
+                    wheelRadius = dataform.wheelRadius.data,
+                    nominalVoltage = dataform.nominalVoltage.data,
+                    cellNominalVoltage = dataform.cellNominalVoltage.data,
+                    cellCapacity = dataform.cellCapacity.data
                     )
         #add the object to the db session
         db.session.add(newitem)
