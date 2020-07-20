@@ -187,8 +187,11 @@ def qcar(id, width=None, height=None):
     # Fetch QCAR instance by ID
     id = QCAR.query.filter_by(id=id).first()
 
+    # Parameter calculations and placeholders
+    wheel_rate = 5
+
     # Fetch Quarter Car Simulation instance - needs more parameters added (Look above)
-    simulation = QuarterCarSimulation(id.sprung_mass, id.unsprung_mass, )
+    simulation = QuarterCarSimulation(id.sprungmass, id.unsprungmass, wheel_rate, id.linearspring, id.damperscompression)
 
     # Load html template string from simulation instance
     data = simulation.load_template('primitives')
