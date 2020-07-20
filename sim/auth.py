@@ -69,13 +69,10 @@ def log():
         if u1 is None:
             error='Incorrect email'
             flash(error)
-            print(error)
         elif not check_password_hash(u1.password_hash,password+email+secrect):
             error='Incorrect Password'
             flash(error)
-            print(error)
         if error is None:
-            print(u1)
             login_user(u1)
             flash('Welcome! ' + u1.email)
             return redirect(url_for('main.home'))
@@ -86,8 +83,6 @@ def log():
 def logout():
     if current_user.is_anonymous:
         return redirect('/login')
-    else:
-        print(current_user)
 
     logout_user()
     return redirect(url_for('main.home'))

@@ -35,7 +35,7 @@
       <!-- Login Form -->
       <form action={{ url_for('auth.register') }} method="POST" role="form">
         {{ registerform.csrf_token }}
-        {{ registerform.email(placeholder="email",class_='fadeIn second',type="text",id="email") }}
+        {{ registerform.email(placeholder="Email",class_='fadeIn second',type="text",id="email") }}
         {{ registerform.password(placeholder="Password",class_='fadeIn third',type="password",id="password") }}
         {{ registerform.confirm(placeholder="Confirm Password",class_='fadeIn fourth',type="password",id="confirm") }}
 

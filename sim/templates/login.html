@@ -36,7 +36,7 @@
       <!-- Login Form -->
       <form action={{ url_for('auth.log') }} method="POST" role="form">
         {{ login_form.csrf_token }}
-        {{ login_form.email(placeholder="email@qutms.com",class_='fadeIn second',type="text",id="email") }}
+        {{ login_form.email(placeholder="Email",class_='fadeIn second',type="text",id="email") }}
         {{ login_form.password(placeholder="Password",class_='fadeIn third',type="password",id="password") }}
         <input type="submit" class="fadeIn fourth" value="Login">
       </form>
