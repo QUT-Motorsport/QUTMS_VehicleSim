@@ -1,3 +1,5 @@
+<html style="background-color: aliceblue;">
+
 <head>
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -5,10 +7,10 @@
   <!-- Custom styles for this template-->
   <link rel= "stylesheet" href= "{{ url_for('static',filename='css/account.css') }}">
 </head>
+<body style="opacity:0.72;background-image:  url('static/img/lab_bg.jpg/');">
 
 {% import "bootstrap/wtf.html" as wtf %}
 <div class="force-contrainer">
-  <img src="{{ url_for('static',filename='img/lab_bg.jpg') }}" alt="User Background" style="opacity: 0.5;">
 
   <div class="wrapper fadeInDown">
 
@@ -53,3 +55,5 @@
     </div>
   </div>
 </div>
+</body>
+</html>

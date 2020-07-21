@@ -1,3 +1,4 @@
+<html style="background-color: aliceblue;">
 <head>
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -7,10 +8,10 @@
 </head>
 
 {% import "bootstrap/wtf.html" as wtf %}
+<body style="opacity:0.72;background-image:  url('static/img/lab_bg.jpg/');">
 <div class="force-contrainer">
-  <img src="{{ url_for('static',filename='img/lab_bg.jpg') }}" alt="User Background" style="opacity: 0.5;">
 
-  <div class="wrapper fadeInDown">
+  <div class="wrapper fadeInDown" ">
     
     <div id="formContent">
 
@@ -51,3 +52,4 @@
     </div>
   </div>
 </div>
+</body>
