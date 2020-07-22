@@ -63,6 +63,7 @@ class Accumulator(db.Model, UserMixin):
     FoS = db.Column(db.Float)
     regen = db.Column(db.Float)
     cellMass = db.Column(db.Float)
+    cellCoverMass = db.Column(db.Float)
     accumBoxMass = db.Column(db.Float)
     vehicleMass = db.Column(db.Float) # Excludes Driver, Accumulator Box/Hardware and Cells
     driverMass = db.Column(db.Float)
@@ -75,10 +76,13 @@ class Accumulator(db.Model, UserMixin):
     gearRatio = db.Column(db.Float)
     efficiency = db.Column(db.Float)
     wheelRadius = db.Column(db.Float)
+    nominalVoltage = db.Column(db.Float)
+    cellNominalVoltage = db.Column(db.Float)
+    cellCapacity = db.Column(db.Float)
     def __repr__(self): #string print method
-        return "<id: {}, name: {}, FoS: {}, regen: {}, cellMass: {}, accumBoxMass: {}, vehicleMass:{}, driverMass:{}, rollingResistanceCoefficient:{}, wheelbase: {}, gradient: {}, frontAxel: {}, rearAxel: {},bumphysteresis: {},>".format(
+        return "<id: {}, name: {}, FoS: {}, regen: {}, cellMass: {}, cellCoverMass: {}, accumBoxMass: {}, vehicleMass:{}, driverMass:{}, rollingResistanceCoefficient:{}, wheelbase: {}, gradient: {}, frontAxel: {}, rearAxel: {}, airVelocity: {}, gearRatio: {}, efficiency: {}, wheelRadius: {}>".format(
                               self.id, self.name, self.FoS, 
-                              self.regen, self.cellMass, self.accumBoxMass, 
+                              self.regen, self.cellMass, self.cellCoverMass, self.accumBoxMass, 
                               self.vehicleMass, self.driverMass, self.rollingResistanceCoefficient, 
                               self.wheelbase,self.gradient,self.frontAxel,
                               self.rearAxel,self.airVelocity, self.gearRatio, self.efficiency, self.wheelRadius)

@@ -10933,7 +10933,11 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 .btn-fill-y {
-  height: 100% !important;
+  padding-bottom: 50%;
+}
+
+.btn-fill-x {
+  padding-right: 33%;
 }
 
 .image-shrink {
