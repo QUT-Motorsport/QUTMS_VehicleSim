@@ -1,6 +1,7 @@
 from .models import Lap, QCAR, Accumulator
 from .forms import dataForm, quarterCarForm, accumulatorForm
-from flask import Blueprint, render_template, redirect, url_for, request, flash, send_file
+from flask import Blueprint,render_template, redirect, url_for, request, flash, send_file
+from flask_login import LoginManager,login_user,current_user,logout_user, login_required
 import datetime
 from . import db
 from werkzeug.utils import secure_filename
@@ -13,9 +14,6 @@ from pypresence import Presence
 from github import Github
 from dotenv import load_dotenv, find_dotenv
 from scipy.io import savemat
-import pickle
-import time
-
 # globals
 window_w = window_h = 0
 mat_upload_number = 0
@@ -38,6 +36,8 @@ g = Github(os.getenv("GITHUB"))
 bp = Blueprint('main', __name__)
 
 # Helper functions
+
+
 
 def check_upload_file(form):
     global mat_upload_number
@@ -92,14 +92,17 @@ def home():
             latest_commit["author"] = commit.commit.author.name
             latest_commit["date"] = commit.commit.author.date
             latest_commits.append(latest_commit)
+        return render_template('home.html', issues=open_issues, labels=labels, commits=latest_commits)
     except:
-        print("Github API Call was unsuccessful")
-
-    return render_template('home.html', issues=open_issues, labels=labels, commits=latest_commits)
+        print("Github API Call was unsuccessful")       
+        return render_template('home.html')
 
 # Telemetry Page
 @bp.route('/telemetry')
 def live_telemetry():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     dataform = dataForm()
     title = 'QUTMS | Live Telemetry'
     if rpc_activated:
@@ -109,6 +112,9 @@ def live_telemetry():
 # Upload Lap Page
 @bp.route('/upload/lap')
 def upload():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     dataform = dataForm()
     title = 'QUTMS | Upload - Lap'
     if rpc_activated:
@@ -118,6 +124,9 @@ def upload():
 # Analyse table for Plot Mass
 @bp.route('/analysis/lap')
 def analysis_lap():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')    
     data = Lap.query.order_by(Lap.id.desc()).all()
     title = 'QUTMS | Analysis'
     if rpc_activated:
@@ -127,6 +136,9 @@ def analysis_lap():
 # Analyse table for Quarter Car
 @bp.route('/analysis/qcar')
 def analysis_qcar():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     data = QCAR.query.order_by(QCAR.id.desc()).all()
     title = 'QUTMS | Analysis'
     if rpc_activated:
@@ -186,6 +198,9 @@ def qcar(id, width=None, height=None):
 # Analyse table for Editing entries in DB
 @bp.route('/edit')
 def edit():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     data = Lap.query.order_by(Lap.id.desc()).all()
     qcar = QCAR.query.order_by(QCAR.id.desc()).all()
     title = 'QUTMS | Edit'
@@ -196,6 +211,9 @@ def edit():
 # View Help for VD Symbols
 @bp.route('/help')
 def help():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     title = 'QUTMS | Help'
     if rpc_activated:
         RPC.update(state="Vehicle Dynamics", details="Studying", large_image="qut-logo")
@@ -204,6 +222,9 @@ def help():
 # Upload parameters for Quarter Car
 @bp.route('/upload/qcar-upload')
 def qcar_upload():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     dataform = quarterCarForm()
     title = 'QUTMS | QCar'
     if rpc_activated:
@@ -214,8 +235,9 @@ def qcar_upload():
 @bp.route('/graph/<id>', defaults={'width': None, 'height': None})
 @bp.route('/graph/<id>/<width>/<height>')
 def graph(id, width=None, height=None):
-
-    # Add width and height to URL for graph sizing
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     if not width or not height:
         return """
         <script>
@@ -249,8 +271,9 @@ def graph(id, width=None, height=None):
 @bp.route('/gg/<id>', defaults={'width': None, 'height': None})
 @bp.route('/gg/<id>/<width>/<height>')
 def gg_diagram(id, width=None, height=None):
-
-    # Add width and height to URL for graph sizing
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     if not width or not height:
         return """
         <script>
@@ -284,8 +307,9 @@ def gg_diagram(id, width=None, height=None):
 @bp.route('/speedcurvature/<id>', defaults={'width': None, 'height': None})
 @bp.route('/speedcurvature/<id>/<width>/<height>')
 def speedcurvature(id, width=None, height=None):
-
-    # Add width and height to URL for graph sizing
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     if not width or not height:
         return """
         <script>
@@ -319,6 +343,9 @@ def speedcurvature(id, width=None, height=None):
 @bp.route('/accumulator/<id>', defaults={'width': None, 'height': None})
 @bp.route('/accumulator/<id>/<width>/<height>')
 def accumulator(id, width=None, height=None):
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     if not width or not height:
         return """
         <script>
@@ -386,6 +413,9 @@ def roadload(roadload_id, lap_id, width=None, height=None):
 # Delete Lap Entry
 @bp.route('/lrm/<id>')
 def lrm(id):
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     info = Lap.query.filter_by(id=id).first()
     path = os.path.dirname(__file__)
     BASE_PATH= os.path.dirname(__file__)
@@ -399,6 +429,9 @@ def lrm(id):
 # Delete Quarter Car entry
 @bp.route('/qrm/<id>')
 def qrm(id):
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     info = QCAR.query.filter_by(id=id).first()
     QCAR.query.filter_by(id=id).delete()
     db.session.commit()
@@ -408,6 +441,9 @@ def qrm(id):
 # Uploads data object for Plot Mass
 @bp.route('/data', methods=['GET','POST'])
 def data():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     dataform = dataForm()
     if dataform.validate_on_submit():
         db_file_path=check_upload_file(dataform)
@@ -437,6 +473,9 @@ def data():
 # Upload data for Quarter Car
 @bp.route('/upload/qcardata', methods=['GET','POST'])
 def qcar_data():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     dataform = quarterCarForm()
     if dataform.validate_on_submit():
         newitem = QCAR(id = datetime.datetime.now(),
@@ -463,8 +502,11 @@ def qcar_data():
     return redirect(url_for('main.qcar_upload'))
 
 # Upload data for Quarter Car
-@bp.route('/upload/accumulator/<identity>/<input_mass>', methods=['GET','POST'])
-def accumulator_data(identity, input_mass):
+@bp.route('/upload/accumulator', methods=['GET','POST'])
+def accumulator_data():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     dataform = accumulatorForm()
     if dataform.validate_on_submit():
         newitem = Accumulator(id = datetime.datetime.now(),
@@ -500,6 +542,9 @@ def accumulator_data(identity, input_mass):
 # download .mat file of stats
 @bp.route('/export_mat', methods=['GET', "POST"])
 def export_mat():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     statistics = pickle.load(open('statistics.p','rb'))
     savemat('sim/static/mat/statistics.mat',statistics)
     return send_file('static/mat/statistics.mat', as_attachment=True, attachment_filename='statistics.mat')
@@ -507,6 +552,9 @@ def export_mat():
 # download all graphs
 @bp.route('/export_button', methods=['GET', "POST"])
 def export_generate_all():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     #load pickled graphs
     fig = pickle.load(open('graph_all.p','rb'))
     #save as svg internally
@@ -520,6 +568,9 @@ def export_generate_all():
 # download gg graph
 @bp.route('/export_button_gg')
 def export_generate_gg():
+    if current_user.is_anonymous:
+        flash('Error: User must sign-in to access feature')
+        return redirect('/login')
     #load pickled gg graph
     fig_gg = pickle.load(open('graph_gg.p','rb'))
     #save as svg internally
@@ -530,4 +581,3 @@ def export_generate_gg():
     #return svg to client
     return send_file('static/svg/graph_gg.svg', as_attachment=True, attachment_filename='graph_output_gg.svg')
 
-    

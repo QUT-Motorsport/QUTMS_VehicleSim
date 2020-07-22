@@ -1,9 +1,19 @@
 # sql database sigma   
 from . import db
 from datetime import datetime
+from flask_login import UserMixin
 
 #user sigma
-class Lap(db.Model):
+class User(db.Model, UserMixin):
+    __tablename__='user' # good practice to specify table name
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), index=True, unique=True, nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
+    def __repr__(self): #string print method
+        return "<email: {}, id: {}>".format(
+            self.email, self.id)
+
+class Lap(db.Model, UserMixin):
     __tablename__='lap' # good practice to specify table name
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String(255), index=True, nullable=False)
@@ -22,7 +32,7 @@ class Lap(db.Model):
                               self.curvature, self.mass, 
                               self.power, self.air_density, self.reference_area, 
                               self.coefficient_of_drag,self.coefficient_of_friction,self.coefficient_of_lift,)
-class QCAR(db.Model):
+class QCAR(db.Model, UserMixin):
     __tablename__='qcar' # good practice to specify table name
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String(255), index=True, nullable=False)
@@ -46,7 +56,7 @@ class QCAR(db.Model):
                               self.tiresnonlinear,self.tireslift,self.bumplinear,
                               self.bumpnonlinear,self.bumphysteresis)
 
-class Accumulator(db.Model):
+class Accumulator(db.Model, UserMixin):
     __tablename__='accumulator' # good practice to specify table name
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String(255), index=True, nullable=False)

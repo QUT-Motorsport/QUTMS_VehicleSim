@@ -1,7 +1,25 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField,DateField,FloatField, PasswordField, IntegerField, validators, FileField, BooleanField
-from wtforms.validators import InputRequired
+from wtforms.validators import InputRequired,EqualTo
 from flask_wtf.file import FileField, FileRequired, FileAllowed
+
+class forgetForm(FlaskForm):
+    email = StringField('email', validators=[InputRequired()])
+    submit = SubmitField("Submit")
+
+class changeForm(FlaskForm):
+    password = PasswordField('Password', validators=[InputRequired()])
+    submit = SubmitField("Submit")
+class LoginForm(FlaskForm):
+    email = StringField('email', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
+    submit = SubmitField("Submit")
+
+class RegisterForm(FlaskForm):
+    email = StringField('email', validators=[InputRequired()])
+    password = PasswordField('Enter Password', [InputRequired(), EqualTo('confirm', message='Passwords must match')])
+    confirm  = PasswordField('Confirm Password')
+    submit = SubmitField("Register")
 
 class dataForm(FlaskForm):
     

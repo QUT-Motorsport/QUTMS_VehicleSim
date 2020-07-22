@@ -13,3 +13,5 @@ mpld3
 pypresence
 PyGithub
 python-dotenv
+flask_mail
+python-decouple
