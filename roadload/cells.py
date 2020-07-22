@@ -53,8 +53,12 @@ class Cells:
     def get_car_mass(self):
         return self.car_mass
 
+    def get_base_weight(self):
+        return self.base_weight
+
     def set_car_mass(self, driverMass, vehicleMass, accumBoxMass, cellCoverMass, cellMass, bricks):
         self.car_mass = round(driverMass + vehicleMass + accumBoxMass + (cellCoverMass / 1000 * self.get_cells_total() * bricks) + (cellMass / 1000 * self.get_cells_total() * bricks), 3)
+        self.base_weight = self.car_mass - driverMass
 
     def set_lap_simulation(self, lap_simulation):
         self.lap_simulation = lap_simulation
@@ -74,14 +78,28 @@ class Cells:
     def get_brick_mass(self):
         return self.brick_mass
 
-    def set_rear_rolling_resistance(self, tire_friction_coefficient, base_weight, gravity, slope, rearAxle, wheelBase):
-        self.rear_rolling_resistance = tire_friction_coefficient * base_weight * gravity * cos(slope) * (rearAxle / wheelBase)
+    def set_rear_rolling_resistance(self, tire_friction_coefficient, gravity, slope, rearAxle, wheelBase):
+        self.rear_rolling_resistance = round(tire_friction_coefficient * self.base_weight * gravity * cos(slope) * (rearAxle / wheelBase), 4)
 
     def get_rear_rolling_resistance(self):
         return self.rear_rolling_resistance
 
-    def set_front_rolling_resistance(self, tire_friction_coefficient, base_weight, gravity, slope, frontAxle, wheelBase):
-        self.front_rolling_resistance = tire_friction_coefficient * base_weight * gravity * cos(slope) * (frontAxle / wheelBase)
+    def set_front_rolling_resistance(self, tire_friction_coefficient, gravity, slope, frontAxle, wheelBase):
+        self.front_rolling_resistance = round(tire_friction_coefficient * self.base_weight * gravity * cos(slope) * (frontAxle / wheelBase), 4)
 
     def get_front_rolling_resistance(self):
         return self.front_rolling_resistance
+
+    def set_aero_force(self, wind_velocity, air_density=0, coefficient_of_drag=0, frontal_area=0, velocity=[]):
+        if air_density == 0 and coefficient_of_drag == 0 and frontal_area == 0 and velocity == []:
+            velocity = self.lap_simulation.get_velocity()
+            air_density = self.lap_simulation.get_vehicle_constants().get_air_density()
+            coefficient_of_drag = self.lap_simulation.get_vehicle_constants().get_coefficient_of_friction()
+            frontal_area = self.lap_simulation.get_vehicle_constants().get_reference_area()
+
+        self.aero_force = []
+        for i in velocity:
+            self.aero_force.append(0.5 * air_density * coefficient_of_drag * frontal_area * (i - wind_velocity)**2)
+
+    def get_aero_force(self):
+        return self.aero_force

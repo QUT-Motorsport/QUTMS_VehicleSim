@@ -27,19 +27,19 @@ class PlotMassSimulation:
         self.window_w = window_w
 
         # Populate constants
-        vehicle = Constants(g, m, P, p, A, Cd, mu, Cl)
+        self.vehicle = Constants(g, m, P, p, A, Cd, mu, Cl)
 
         # Fetch track data from .mat file
         track = Track(mat_file, crv_name, 'x')
         self.track = track.get_track()
         
         # Calculate Maximum Lateral Velocity
-        latVel = LateralVelocity(vehicle, track)
+        latVel = LateralVelocity(self.vehicle, track)
         self.lat_velocity = latVel.get_lat_velocity()
         self.peak_loc = latVel.get_peak_loc()
 
         # Calculate Acceleration and Deacceleration
-        self.momentum = Momentum(vehicle, track, self.peak_loc, self.lat_velocity)
+        self.momentum = Momentum(self.vehicle, track, self.peak_loc, self.lat_velocity)
         self.momentum.calc_accel()
         self.momentum.calc_deaccel()
 
@@ -50,6 +50,18 @@ class PlotMassSimulation:
 
         # Fetch statistics of lap
         self.statistics = Statistics(self.velocity, track.get_x())
+
+    def get_velocity(self):
+        return self.velocity
+
+    def get_a_lat(self):
+        return self.a_lat
+
+    def get_a_long(self):
+        return self.a_long
+
+    def get_vehicle_constants(self):
+        return self.vehicle
 
     def output(self):
         """Useful for debugging

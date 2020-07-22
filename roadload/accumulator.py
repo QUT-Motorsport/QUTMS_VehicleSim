@@ -7,7 +7,7 @@ class Accumulator:
     Virtual representation of an Accumulator
     """
 
-    def __init__(self, min_bricks, max_bricks, min_cells, max_cells, constants):
+    def __init__(self, min_bricks, max_bricks, min_cells, max_cells, constants, gravity=9.81):
 
         # Set class attributes
         self.min_bricks = min_bricks
@@ -15,6 +15,7 @@ class Accumulator:
         self.min_cells = min_cells
         self.max_cells = max_cells
         self.constants = constants
+        self.constants['gravity'] = gravity
 
         self.brick_iterations = self.iterate_bricks()
         self.brick_configurations = self.get_bricks_configurations()
@@ -117,6 +118,16 @@ class Accumulator:
         return self.simulation_iterations
 
     def set_roadload_calcs(self):
+        rolRes = self.constants['rollingResistanceCoefficient']
+        gravity = self.constants['gravity']
+        slope = self.constants['gradient']
+        rearAxle = self.constants['rearAxel']
+        frontAxle = self.constants['frontAxel']
+        wheelBase = self.constants['wheelbase']
+        airVelocity = self.constants['airVelocity']
         for num, i in enumerate(self.brick_layouts):
             for y in i.cells:
-                continue
+                y.set_rear_rolling_resistance(rolRes, gravity, slope, rearAxle, wheelBase)
+                y.set_front_rolling_resistance(rolRes, gravity, slope, frontAxle, wheelBase)
+                y.set_aero_force(airVelocity)
+                print(y.get_aero_force())

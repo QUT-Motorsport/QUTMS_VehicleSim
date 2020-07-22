@@ -126,21 +126,31 @@
                                     </div>
                                     <div id="collapse{{y.get_cells_total() * i.get_bricks()}}cells" class="collapse" aria-labelledby="heading{{y.get_cells_total() * i.get_bricks()}}cells" data-parent="#accordion-sub">
                                         <div class="card-body">
-                                            <button type="button" class="btn btn-primary">
-                                                Car Mass <span class="badge badge-light">{{y.get_car_mass()}}</span>
-                                            </button>
-                                            <button type="button" class="btn btn-primary">
-                                                Accumulator Mass <span class="badge badge-light">{{ y.get_accumulator_mass() }}</span>
-                                            </button>
-                                            <button type="button" class="btn btn-primary">
-                                                Brick Mass <span class="badge badge-light">{{ y.get_brick_mass() }}</span>
-                                            </button>
-                                            <button type="button" class="btn btn-primary">
-                                                Total Cells <span class="badge badge-light">{{y.get_cells_total() * i.get_bricks()}}</span>
-                                            </button>
-                                            <button type="button" class="btn btn-primary">
-                                                Endurance Time <span class="badge badge-light">{{ y.get_lap_simulation().get_endurance_time(FoS) }}</span>
-                                            </button>
+                                            <div class="row mb-2">
+                                                <button type="button" class="btn btn-primary mr-1">
+                                                    Vehicle Mass <span class="badge badge-light">{{y.get_base_weight()}}</span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary mr-1">
+                                                    Accumulator Mass <span class="badge badge-light">{{ y.get_accumulator_mass() }}</span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary mr-1">
+                                                    Brick Mass <span class="badge badge-light">{{ y.get_brick_mass() }}</span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary mr-1">
+                                                    Total Cells <span class="badge badge-light">{{y.get_cells_total() * i.get_bricks()}}</span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary mr-1">
+                                                    Endurance Time <span class="badge badge-light">{{ y.get_lap_simulation().get_endurance_time(FoS) }}</span>
+                                                </button>
+                                            </div>
+                                            <div class="row">
+                                                <button type="button" class="btn btn-primary mr-1">
+                                                    Frr <span class="badge badge-light">{{ y.get_rear_rolling_resistance() }}</span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary mr-1">
+                                                    Ffr <span class="badge badge-light">{{ y.get_front_rolling_resistance() }}</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
