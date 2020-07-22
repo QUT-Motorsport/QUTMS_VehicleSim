@@ -101,7 +101,7 @@ def home():
 @bp.route('/telemetry')
 def live_telemetry():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     dataform = dataForm()
     title = 'QUTMS | Live Telemetry'
@@ -113,7 +113,7 @@ def live_telemetry():
 @bp.route('/upload/lap')
 def upload():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     dataform = dataForm()
     title = 'QUTMS | Upload - Lap'
@@ -125,7 +125,7 @@ def upload():
 @bp.route('/analysis/lap')
 def analysis_lap():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')    
     data = Lap.query.order_by(Lap.id.desc()).all()
     title = 'QUTMS | Analysis'
@@ -137,7 +137,7 @@ def analysis_lap():
 @bp.route('/analysis/qcar')
 def analysis_qcar():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     data = QCAR.query.order_by(QCAR.id.desc()).all()
     title = 'QUTMS | Analysis'
@@ -199,7 +199,7 @@ def qcar(id, width=None, height=None):
 @bp.route('/edit')
 def edit():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     data = Lap.query.order_by(Lap.id.desc()).all()
     qcar = QCAR.query.order_by(QCAR.id.desc()).all()
@@ -212,7 +212,7 @@ def edit():
 @bp.route('/help')
 def help():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     title = 'QUTMS | Help'
     if rpc_activated:
@@ -223,7 +223,7 @@ def help():
 @bp.route('/upload/qcar-upload')
 def qcar_upload():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     dataform = quarterCarForm()
     title = 'QUTMS | QCar'
@@ -236,7 +236,7 @@ def qcar_upload():
 @bp.route('/graph/<id>/<width>/<height>')
 def graph(id, width=None, height=None):
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     if not width or not height:
         return """
@@ -272,7 +272,7 @@ def graph(id, width=None, height=None):
 @bp.route('/gg/<id>/<width>/<height>')
 def gg_diagram(id, width=None, height=None):
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     if not width or not height:
         return """
@@ -308,7 +308,7 @@ def gg_diagram(id, width=None, height=None):
 @bp.route('/speedcurvature/<id>/<width>/<height>')
 def speedcurvature(id, width=None, height=None):
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     if not width or not height:
         return """
@@ -344,7 +344,7 @@ def speedcurvature(id, width=None, height=None):
 @bp.route('/accumulator/<id>/<width>/<height>')
 def accumulator(id, width=None, height=None):
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     if not width or not height:
         return """
@@ -414,7 +414,7 @@ def roadload(roadload_id, lap_id, width=None, height=None):
 @bp.route('/lrm/<id>')
 def lrm(id):
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     info = Lap.query.filter_by(id=id).first()
     path = os.path.dirname(__file__)
@@ -430,7 +430,7 @@ def lrm(id):
 @bp.route('/qrm/<id>')
 def qrm(id):
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     info = QCAR.query.filter_by(id=id).first()
     QCAR.query.filter_by(id=id).delete()
@@ -442,7 +442,7 @@ def qrm(id):
 @bp.route('/data', methods=['GET','POST'])
 def data():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     dataform = dataForm()
     if dataform.validate_on_submit():
@@ -474,7 +474,7 @@ def data():
 @bp.route('/upload/qcardata', methods=['GET','POST'])
 def qcar_data():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     dataform = quarterCarForm()
     if dataform.validate_on_submit():
@@ -505,7 +505,7 @@ def qcar_data():
 @bp.route('/upload/accumulator', methods=['GET','POST'])
 def accumulator_data():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     dataform = accumulatorForm()
     if dataform.validate_on_submit():
@@ -543,7 +543,7 @@ def accumulator_data():
 @bp.route('/export_mat', methods=['GET', "POST"])
 def export_mat():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     statistics = pickle.load(open('statistics.p','rb'))
     savemat('sim/static/mat/statistics.mat',statistics)
@@ -553,7 +553,7 @@ def export_mat():
 @bp.route('/export_button', methods=['GET', "POST"])
 def export_generate_all():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     #load pickled graphs
     fig = pickle.load(open('graph_all.p','rb'))
@@ -569,7 +569,7 @@ def export_generate_all():
 @bp.route('/export_button_gg')
 def export_generate_gg():
     if current_user.is_anonymous:
-        flash('You need to login')
+        flash('Error: User must sign-in to access feature')
         return redirect('/login')
     #load pickled gg graph
     fig_gg = pickle.load(open('graph_gg.p','rb'))

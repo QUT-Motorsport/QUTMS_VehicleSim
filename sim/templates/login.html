@@ -21,7 +21,9 @@
       <div class="fadeIn first mt-5 mb-1">
         <img src="{{ url_for('static',filename='img/QUTMS_Logo_Blue.jpg') }}" alt="User Icon" id="icon">
       </div>
-{% with messages = get_flashed_messages() %}              
+      <div class="mb-3 mt-3">
+      {% with messages = get_flashed_messages() %}
+      </div>          
 {% if messages %}
   <ol style="margin:auto;padding:2px"class='fadeIn fl'>
     {% for message in messages %}
