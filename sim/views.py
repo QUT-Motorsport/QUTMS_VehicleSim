@@ -188,7 +188,7 @@ def qcar(id, width=None, height=None):
     id = QCAR.query.filter_by(id=id).first()
 
     # Parameter calculations and placeholders
-    wheel_rate = 5
+    wheel_rate = spring_rate*(0.611^2)
 
     # Fetch Quarter Car Simulation instance - needs more parameters added (Look above)
     simulation = QuarterCarSimulation(id.sprungmass, id.unsprungmass, wheel_rate, id.linearspring, id.damperscompression)
