@@ -1,0 +1,88 @@
+clear all
+close all
+
+%% Vehicle Parameters
+m_s = 120/32.2; %sprung mass: Slugs Baja 120 FSAE 140
+k_w = 20*12; %wheel rate: Baja 20 FSAE 49 lbf/in (*12 converts lbf/ft to lbf/in)
+c_w = 4*12; % damping of the wheel: Baja 2.2 FSAE 3.3 lbf/(in/s)
+m_u = 20/32.2; %unsprung mass: Slugs Baja 20 FSAE 20 lbf
+k_t = 375*12; %tire rate: Baja 375 FSAE 600 lbf/in
+
+%% Solving for Ride Frequency
+w_ride = 1/2/pi*(((k_w*k_t)/(k_w+k_t))/m_s)^0.5; %ride frequency, Hz
+DR = c_w/(2*w_ride*2*pi*m_s); %damping ratio of the sprung mass, unitless
+
+%% Numerical Model Inputs
+t_final = 3; %seconds
+dt = 0.001; %seconds
+t = [0:dt:t_final]'; %time vector
+a_s = zeros(size(t)); %acceleration of sprung mass
+v_s = zeros(size(t)); %velocity of sprung mass
+y_s = zeros(size(t)); %position of sprung mass
+a_u = zeros(size(t)); %acceleration of unsprung mass
+v_u = zeros(size(t)); %velocity of unsprung mass
+y_u = zeros(size(t)); %position of unsprung mass
+y_g = zeros(size(t)); %ground
+F_s = zeros(size(t)); %force on sprung mass
+F_u = zeros(size(t)); %force on unsprung mass
+
+%% Initial Conditions
+v_s(1) = 0;
+y_s(1) = 0;
+v_u(1) = 0;
+y_u(1) = 0;
+
+% %% Hitting a straight bump
+% y_g = 2/12*ones(size(t)); %2 inch tall bump
+
+%% Hitting a rising bump
+v_x = 80; %ft/s
+for i = 1:length(t)
+    y_g(i) = t(i)*v_x; %Run = rise 
+    if t(i)>2/12/v_x %2 inches tall
+        y_g(i) = 2/12;
+    end
+end
+
+% %% Jump at 20 ft/s over 1 foot tall ramp
+% v_x = 20; %ft/s
+% for i = 1:length(t)
+%     y_g(i) = t(i)*v_x/3; %Run = 3*rise 
+%     if t(i)>3/v_x %3 feet long
+%         y_g(i) = 0;
+%     end
+% end
+
+%% Motion Equations
+for i=1:length(t)-1
+    a_s(i) = (-k_w*(y_s(i)-y_u(i))-c_w*(v_s(i)-v_u(i))+F_s(i))/m_s; %acceleration of sprung mass
+    a_u(i) = (-k_t*(y_u(i)-y_g(i))+k_w*(y_s(i)-y_u(i))+c_w*(v_s(i)-v_u(i))+F_u(i))/m_u; %acceleration of unsprung mass
+    %%Allowing it to leave the ground
+%     if a_u(i)<-32.2
+%         a_u(i) = -32.2;
+%     end
+    v_s(i+1) = a_s(i)*dt+v_s(i); %step forward in time to get new sprung velocity
+    v_u(i+1) = a_u(i)*dt+v_u(i); %step forward in time to get new unsprung velocity
+    y_s(i+1) = v_s(i)*dt+y_s(i); %step forward in time to get new sprung position
+    y_u(i+1) = v_u(i)*dt+y_u(i); %step forward in time to get new unsprung position
+end
+
+%% Plotting
+
+figure
+plot(t,y_s*12) %you can replace y_s with a_s*m_s to model force
+hold on
+plot(t,y_u*12) %you can replace y_u with a_u*m_u to model force
+hold on
+plot(t,y_g*12)
+legend('Sprung','Unsprung','Ground')
+xlabel('Time (secs)')
+ylabel('Position (inches)' )
+
+figure
+plot(t,a_s*m_s) %Forces as F=ma
+hold on
+plot(t,a_u*m_u ) 
+legend('Sprung','Unsprung')
+xlabel('Force (lbf)')
+ylabel('Position (inches)' )
