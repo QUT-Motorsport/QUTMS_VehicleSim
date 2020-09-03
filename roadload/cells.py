@@ -1,4 +1,5 @@
 from math import cos
+from numpy import dot
 
 class Cells:
 
@@ -90,16 +91,31 @@ class Cells:
     def get_front_rolling_resistance(self):
         return self.front_rolling_resistance
 
+    def list_subtract(self, input_list, value):
+        return [x - value for x in input_list]
+
     def set_aero_force(self, wind_velocity, air_density=0, coefficient_of_drag=0, frontal_area=0, velocity=[]):
         if air_density == 0 and coefficient_of_drag == 0 and frontal_area == 0 and velocity == []:
             velocity = self.lap_simulation.get_velocity()
             air_density = self.lap_simulation.get_vehicle_constants().get_air_density()
-            coefficient_of_drag = self.lap_simulation.get_vehicle_constants().get_coefficient_of_friction()
+            coefficient_of_drag = self.lap_simulation.get_vehicle_constants().get_coefficient_of_drag()
             frontal_area = self.lap_simulation.get_vehicle_constants().get_reference_area()
 
-        self.aero_force = []
-        for i in velocity:
-            self.aero_force.append(0.5 * air_density * coefficient_of_drag * frontal_area * (i - wind_velocity)**2)
+        actual_velocity = [(x - wind_velocity)**2 for x in velocity]
+        self.aero_force = [0.5 * air_density * coefficient_of_drag * frontal_area * x for x in actual_velocity]
 
     def get_aero_force(self):
         return self.aero_force
+
+    def set_tractive_force(self):
+        self.tractive_force = []
+        accel = self.get_lap_simulation().get_a_long()
+
+        if len(accel) == len(self.aero_force):
+            for i in range(len(self.aero_force)):
+                self.tractive_force.append((self.car_mass * accel[i]) + self.aero_force[i] + self.front_rolling_resistance + self.rear_rolling_resistance)
+        print(self.tractive_force[:4])
+        
+
+    def get_tractive_force(self):
+        return self.tractive_force

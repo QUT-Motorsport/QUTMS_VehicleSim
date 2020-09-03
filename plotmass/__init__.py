@@ -6,6 +6,8 @@ from .statistics import Statistics
 from .gg_diagram import GG_Diagram
 
 import pickle
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt, mpld3
 from datetime import timedelta
 from numpy import ceil
@@ -81,6 +83,7 @@ class PlotMassSimulation:
         pickle_stats = {}
         pickle_stats["velocity"] = self.velocity
         pickle_stats["time"] = self.statistics.get_t()
+        pickle_stats["agg_time"] = self.statistics.get_agg_time()
         pickle_stats["long_accel"] = self.a_long
         pickle.dump(pickle_stats, open("statistics.p", "wb"))
 

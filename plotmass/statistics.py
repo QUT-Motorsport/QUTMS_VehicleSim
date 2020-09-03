@@ -19,6 +19,17 @@ class Statistics:
 
         self.fastest_lap = str(timedelta(seconds=round(self.lap_time, 2)))[:-4]
 
+        # Aggregated time
+        self.agg_time = [None] * len(self.time)
+
+        for num, value in enumerate(self.time):
+            if num == 0:
+                self.agg_time[num] = value
+            else:
+                self.agg_time[num] = self.agg_time[num-1] + value
+
+        print(self.agg_time)
+
         # Calculate max and min speeds in km/h
         self.max_speed = round(max(velocity) * 3.6, 2)
         self.min_speed = round(min(velocity) * 3.6, 2)
@@ -28,6 +39,9 @@ class Statistics:
 
     def get_time(self):
         return self.get_t()
+
+    def get_agg_time(self):
+        return self.agg_time
 
     def get_fastest_lap(self):
         return self.fastest_lap

@@ -130,4 +130,4 @@ class Accumulator:
                 y.set_rear_rolling_resistance(rolRes, gravity, slope, rearAxle, wheelBase)
                 y.set_front_rolling_resistance(rolRes, gravity, slope, frontAxle, wheelBase)
                 y.set_aero_force(airVelocity)
-                print(y.get_aero_force())
+                y.set_tractive_force()
