@@ -11,6 +11,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt, mpld3
 from datetime import timedelta
 from numpy import ceil
+import numpy as np
 
 class PlotMassSimulation:
     """Implementation of a Plot Mass Lap Simulation
@@ -116,7 +117,12 @@ class PlotMassSimulation:
         a[2][0].set_xlabel('Lateral Acceleration (m/s^2)')
         a[2][0].margins(x=0.01, y=0.01)
 
-        fig.delaxes(a[2][1])
+        a[2][1].set_title('Operating Velocity')
+        a[2][1].hist([x * 3.6 for x in self.velocity],120)
+        a[2][0].set_xlabel('Velocity (km/h)')
+        a[2][0].set_ylabel('Distance at Velocity (m)')
+
+        #fig.delaxes(a[2][1])
         fig.subplots_adjust(top = 0.97, bottom = 0.05, right = 1, left = 0.05, hspace = 0.2, wspace = 0.2)
 
         return fig
